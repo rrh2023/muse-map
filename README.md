@@ -1,132 +1,38 @@
-# Gather — MERN Event Platform
+# Muse Map
 
-A full-stack event management app built with MongoDB, Express, React, and Node.js.
+A full-stack event management app where users can create, discover, and register for local events with a calendar and list view.
 
-## Features
-
-- **Authentication** — JWT-based register/login with protected routes
-- **Create Events** — Rich form with title, description, date/time, location, category, capacity
-- **Calendar View** — Interactive monthly calendar with color-coded event dots by category
-- **List View** — Grid layout of all events with filtering by category
-- **Event Detail** — Full event info, attendee list, capacity progress bar
-- **Register/Unregister** — One-click event signup with capacity enforcement
-- **My Events Dashboard** — Tabs for events you're organizing vs. attending
-- **Edit & Delete** — Organizers can edit or delete their events
+---
 
 ## Tech Stack
 
-| Layer     | Technology                            |
-|-----------|---------------------------------------|
-| Frontend  | React 18, React Router v6, Vite       |
-| Backend   | Node.js, Express 4                    |
-| Database  | MongoDB, Mongoose                     |
-| Auth      | JWT (jsonwebtoken), bcryptjs          |
-| Styling   | Pure CSS with custom design system    |
+- React.js (frontend)
+- Node.js / Express.js (backend)
+- MongoDB
 
-## Project Structure
+---
 
-```
-mern-events/
-├── package.json          # Root scripts (run both servers)
-├── server/
-│   ├── server.js         # Express app entry point
-│   ├── .env.example      # Environment variable template
-│   ├── models/
-│   │   ├── User.js       # User schema (name, email, hashed password)
-│   │   └── Event.js      # Event schema (title, date, attendees, etc.)
-│   ├── routes/
-│   │   ├── auth.js       # POST /register, POST /login, GET /me
-│   │   └── events.js     # Full CRUD + register/unregister endpoints
-│   └── middleware/
-│       └── auth.js       # JWT verification middleware
-└── client/
-    ├── index.html
-    ├── vite.config.js    # Proxies /api → localhost:5000
-    └── src/
-        ├── App.jsx       # Router setup with protected routes
-        ├── context/
-        │   └── AuthContext.jsx   # Global auth state + authFetch helper
-        ├── components/
-        │   ├── Navbar.jsx
-        │   └── EventCard.jsx
-        └── pages/
-            ├── AuthPage.jsx        # Login + Register
-            ├── CalendarPage.jsx    # Calendar + list view
-            ├── EventDetailPage.jsx # Event detail + register action
-            ├── CreateEventPage.jsx # Create + Edit form
-            └── MyEventsPage.jsx    # Dashboard
-```
+## Features
 
-## Quick Start
+- JWT-based register/login with protected routes
+- Create events with title, description, date/time, location, category, and capacity
+- Interactive monthly calendar with color-coded event dots by category
+- Grid list view with category filtering
+- Event detail page with attendee list and capacity progress bar
+- One-click event registration/unregistration with capacity enforcement
+- Dashboard with tabs for events you're organizing vs. attending
+- Organizers can edit or delete their events
 
-### Prerequisites
-- Node.js 18+
-- MongoDB running locally (`mongod`) or a MongoDB Atlas URI
-
-### 1. Clone & Install
-
-```bash
-# Install root dependencies
-npm install
-
-# Install all server + client dependencies
-npm run install:all
-```
-
-### 2. Configure Environment
-
-```bash
-cd server
-cp .env.example .env
-```
-
-Edit `server/.env`:
-```env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/mern-events
-JWT_SECRET=change_this_to_a_long_random_string
-CLIENT_URL=http://localhost:5173
-```
-
-### 3. Run Development Servers
-
-```bash
-# From the root directory — runs both servers concurrently
-npm run dev
-```
-
-- **Backend**: http://localhost:5000
-- **Frontend**: http://localhost:5173
-
-## API Endpoints
-
-### Auth
-| Method | Path              | Auth | Description           |
-|--------|-------------------|------|-----------------------|
-| POST   | /api/auth/register | –   | Create account        |
-| POST   | /api/auth/login    | –   | Sign in, get JWT      |
-| GET    | /api/auth/me       | ✓   | Get current user      |
-
-### Events
-| Method | Path                        | Auth | Description                    |
-|--------|-----------------------------|------|--------------------------------|
-| GET    | /api/events                 | –    | List all events (filterable)   |
-| GET    | /api/events/:id             | –    | Get single event               |
-| POST   | /api/events                 | ✓    | Create event                   |
-| PUT    | /api/events/:id             | ✓    | Update event (organizer only)  |
-| DELETE | /api/events/:id             | ✓    | Delete event (organizer only)  |
-| POST   | /api/events/:id/register    | ✓    | Register for event             |
-| DELETE | /api/events/:id/register    | ✓    | Cancel registration            |
-| GET    | /api/events/user/my-events  | ✓    | Events user created            |
-| GET    | /api/events/user/registered | ✓    | Events user registered for     |
+---
 
 ## Deployment
 
-### Backend (e.g., Railway, Render)
-1. Set environment variables (MONGO_URI, JWT_SECRET, CLIENT_URL)
-2. `npm start` in the `server/` directory
+- Frontend: Netlify
+- Backend: Render
+- Database: MongoDB Atlas
 
-### Frontend (e.g., Vercel, Netlify)
-1. Build: `cd client && npm run build`
-2. Deploy the `client/dist/` folder
-3. Update `vite.config.js` proxy OR set `VITE_API_URL` env var and update fetch calls to use it
+---
+
+License
+
+MIT
