@@ -2,6 +2,8 @@
 
 A full-stack event management app where users can create, discover, and register for local events with a calendar and list view.
 
+https://muse-map.netlify.app/
+
 ---
 
 ## Tech Stack
