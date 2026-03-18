@@ -33,13 +33,8 @@
   cursor: pointer;
   letter-spacing: 0.01em;
 }
-
 .tab:hover { color: var(--text); }
-
-.tab.active {
-  background: var(--surface2);
-  color: var(--accent);
-}
+.tab.active { background: var(--surface2); color: var(--accent); }
 
 .tab-count {
   background: var(--border);
@@ -51,7 +46,6 @@
   min-width: 18px;
   text-align: center;
 }
-
 .tab.active .tab-count {
   background: rgba(94,207,207,0.1);
   color: var(--accent);
@@ -63,11 +57,7 @@
   gap: 1rem;
 }
 
-.my-event-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
+.my-event-item { display: flex; flex-direction: column; }
 
 .my-event-item .event-card {
   border-bottom-left-radius: 0;
@@ -93,4 +83,23 @@
   gap: 0.35rem;
   font-size: 0.78rem;
   color: var(--text-dim);
+}
+
+/* ── MOBILE ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .my-events-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-events-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tabs { width: 100%; }
+
+  .tab { flex: 1; justify-content: center; padding: 0.5rem 0.5rem; font-size: 0.82rem; }
+
+  .my-events-grid { grid-template-columns: 1fr; }
 }
