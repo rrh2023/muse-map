@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -25,28 +25,37 @@
   padding: 0.45rem 1rem;
   border-radius: calc(var(--radius-sm) - 2px);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--text-muted);
   background: transparent;
   border: none;
   transition: all var(--transition);
   cursor: pointer;
+  letter-spacing: 0.01em;
 }
 
 .tab:hover { color: var(--text); }
-.tab.active { background: var(--surface2); color: var(--text); }
+
+.tab.active {
+  background: var(--surface2);
+  color: var(--accent);
+}
 
 .tab-count {
   background: var(--border);
   color: var(--text-dim);
   border-radius: 10px;
   padding: 0 0.4rem;
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 500;
   min-width: 18px;
   text-align: center;
 }
-.tab.active .tab-count { background: var(--border2); color: var(--text-muted); }
+
+.tab.active .tab-count {
+  background: rgba(94,207,207,0.1);
+  color: var(--accent);
+}
 
 .my-events-grid {
   display: grid;
@@ -82,6 +91,6 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-dim);
 }

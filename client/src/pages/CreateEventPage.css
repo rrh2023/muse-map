@@ -16,27 +16,40 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle iridescent top line on each form section */
+.form-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(94,207,207,0.3), transparent);
 }
 
 .form-section-title {
   font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-muted);
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.15rem;
+  letter-spacing: 0.01em;
 }
 
 .char-count {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-dim);
   text-align: right;
   margin-top: 0.2rem;
 }
 
 .field-hint {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-dim);
   margin-top: 0.2rem;
 }
