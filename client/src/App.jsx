@@ -6,6 +6,7 @@ import CalendarPage from './pages/CalendarPage';
 import EventDetailPage from './pages/EventDetailPage';
 import CreateEventPage from './pages/CreateEventPage';
 import MyEventsPage from './pages/MyEventsPage';
+import MapPage from './pages/MapPage';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -21,8 +22,9 @@ function AppRoutes() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<CalendarPage />} />
         <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
+        <Route path="/" element={<CalendarPage />} />
+        <Route path="/map" element={<MapPage />} />
         <Route path="/events/:id" element={<EventDetailPage />} />
         <Route path="/create-event" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
         <Route path="/edit-event/:id" element={<ProtectedRoute><CreateEventPage edit /></ProtectedRoute>} />

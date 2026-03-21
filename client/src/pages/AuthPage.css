@@ -140,4 +140,11 @@
   padding: 0;
   transition: opacity var(--transition);
 }
+
 .auth-switch-btn:hover { opacity: 0.75; }
+
+.auth-logo-img {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
+}

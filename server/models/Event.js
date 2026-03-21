@@ -27,13 +27,13 @@ const eventSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['conference', 'workshop', 'social', 'sports', 'music', 'arts', 'tech', 'other'],
-      default: 'other',
+      enum: ['poetry', 'visual-arts', 'music', 'community', 'experimental'],
+      default: 'community',
     },
     capacity: {
       type: Number,
       min: [1, 'Capacity must be at least 1'],
-      default: null, // null = unlimited
+      default: null,
     },
     imageUrl: {
       type: String,
@@ -58,12 +58,10 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Virtual for attendee count
 eventSchema.virtual('attendeeCount').get(function () {
   return this.attendees.length;
 });
 
-// Virtual for available spots
 eventSchema.virtual('availableSpots').get(function () {
   if (!this.capacity) return null;
   return Math.max(0, this.capacity - this.attendees.length);

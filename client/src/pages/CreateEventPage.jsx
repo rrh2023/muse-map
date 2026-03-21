@@ -2,9 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './CreateEventPage.css';
-import API_BASE from '../config';
 
-const CATEGORIES = ['conference','workshop','social','sports','music','arts','tech','other'];
+const CATEGORIES = [
+  { value: 'poetry',       label: 'Poetry & Literature' },
+  { value: 'visual-arts',  label: 'Visual Arts' },
+  { value: 'music',        label: 'Music & Performance' },
+  { value: 'community',    label: 'Community & Culture' },
+  { value: 'experimental', label: 'Special / Experimental' },
+];
 
 function toLocalDatetimeString(dateStr) {
   if (!dateStr) return '';
@@ -20,7 +25,7 @@ export default function CreateEventPage({ edit }) {
 
   const [form, setForm] = useState({
     title: '', description: '', date: '', endDate: '',
-    location: '', category: 'other', capacity: '', imageUrl: '',
+    location: '', category: 'community', capacity: '', imageUrl: '',
   });
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(edit);
@@ -28,7 +33,7 @@ export default function CreateEventPage({ edit }) {
 
   useEffect(() => {
     if (edit && id) {
-      fetch(`${API_BASE}/api/events/${id}`)
+      fetch(`/api/events/${id}`)
         .then((r) => r.json())
         .then((data) => {
           const ev = data.event;
@@ -120,7 +125,7 @@ export default function CreateEventPage({ edit }) {
               <label>Category</label>
               <select name="category" value={form.category} onChange={handleChange}>
                 {CATEGORIES.map((c) => (
-                  <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                  <option key={c.value} value={c.value}>{c.label}</option>
                 ))}
               </select>
             </div>

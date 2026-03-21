@@ -1,16 +1,27 @@
 import { useState, useEffect, useCallback } from 'react';
 import EventCard from '../components/EventCard';
 import './CalendarPage.css';
-import API_BASE from '../config';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['January','February','March','April','May','June',
                  'July','August','September','October','November','December'];
-const CATEGORIES = ['all','conference','workshop','social','sports','music','arts','tech','other'];
+const CATEGORIES = ['all', 'poetry', 'visual-arts', 'music', 'community', 'experimental'];
+
+const CATEGORY_LABELS = {
+  'all':          'All Categories',
+  'poetry':       'Poetry & Literature',
+  'visual-arts':  'Visual Arts',
+  'music':        'Music & Performance',
+  'community':    'Community & Culture',
+  'experimental': 'Special / Experimental',
+};
 
 const CATEGORY_COLORS = {
-  conference: '#5a8ae0', workshop: '#8a5ae0', social: '#5aae7c', sports: '#e05a5a',
-  music: '#e8a04a', arts: '#e0a05a', tech: '#5ae0c8', other: '#888892',
+  'poetry':       '#5ECFCF',
+  'visual-arts':  '#9B7FD4',
+  'music':        '#4EAF8C',
+  'community':    '#7EB8E8',
+  'experimental': '#E05A7A',
 };
 
 export default function CalendarPage() {
@@ -29,7 +40,7 @@ export default function CalendarPage() {
     setLoading(true);
     try {
       const params = new URLSearchParams({ month: month + 1, year, category });
-      const res = await fetch(`${API_BASE}/api/events?${params}`);
+      const res = await fetch(`/api/events?${params}`);
       const data = await res.json();
       setEvents(data.events || []);
     } catch (e) {
@@ -87,7 +98,7 @@ export default function CalendarPage() {
             </button>
           </div>
           <select className="category-filter" value={category} onChange={(e) => { setCategory(e.target.value); setSelectedDate(null); }}>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{c === 'all' ? 'All categories' : c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+            {CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>)}
           </select>
         </div>
       </div>

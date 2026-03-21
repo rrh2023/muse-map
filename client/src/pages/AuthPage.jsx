@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './AuthPage.css';
+import logo from '../assets/muse-map_logo_transparent.png';
 import API_BASE from '../config';
 
 export default function AuthPage() {
@@ -54,13 +55,9 @@ export default function AuthPage() {
     <div className="auth-page">
       <div className="auth-bg" />
       <div className="auth-card">
-        <div className="auth-logo">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-          <span>Muse Map</span>
-        </div>
+       <div className="auth-logo">
+  <img src={logo} alt="Muse Map" className="auth-logo-img" />
+</div>
 
         <h1 className="auth-title">
           {mode === 'login' ? 'Welcome back' : 'Create account'}

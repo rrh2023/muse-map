@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom';
+import { CATEGORY_ICONS, CATEGORY_LABELS } from '../categories';
 import './EventCard.css';
-
-const CATEGORY_ICONS = {
-  conference: '🎤', workshop: '🛠', social: '🎉', sports: '⚽',
-  music: '🎵', arts: '🎨', tech: '💻', other: '📌',
-};
 
 export function formatDate(dateStr) {
   const d = new Date(dateStr);
@@ -17,14 +13,15 @@ export function formatTime(dateStr) {
 }
 
 export default function EventCard({ event, compact = false }) {
-  const icon = CATEGORY_ICONS[event.category] || '📌';
+  const icon = CATEGORY_ICONS[event.category] || '✦';
+  const label = CATEGORY_LABELS[event.category] || event.category;
   const spotsLeft = event.capacity ? event.capacity - (event.attendees?.length || 0) : null;
 
   return (
     <Link to={`/events/${event._id}`} className={`event-card card ${compact ? 'compact' : ''}`}>
       <div className="event-card-header">
         <div className="event-icon">{icon}</div>
-        <span className={`badge cat-${event.category}`}>{event.category}</span>
+        <span className={`badge cat-${event.category}`}>{label}</span>
       </div>
       <div className="event-card-body">
         <h3 className="event-title">{event.title}</h3>
