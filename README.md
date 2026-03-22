@@ -2,7 +2,7 @@
 
 A full-stack cultural event platform where users can create, discover, and register for local events across Jersey City with a calendar, list, and interactive map view.
 
-https://muse-map.netlify.app/
+https://muse-map.vercel.app/
 
 ---
 
