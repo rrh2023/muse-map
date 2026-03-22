@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import API_BASE from '../config';
 import logo from '../assets/muse-map_logo_transparent.png';
 import './Navbar.css';
 
@@ -11,6 +12,22 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleManageSubscription = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/stripe/portal`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error('Portal error:', err);
+    }
   };
 
   return (
@@ -39,6 +56,11 @@ export default function Navbar() {
                 </svg>
                 New Event
               </Link>
+              {user.subscriptionStatus === 'active' && (
+                <button className="btn btn-ghost btn-sm" onClick={handleManageSubscription}>
+                  Manage Subscription
+                </button>
+              )}
               <div className="navbar-user">
                 <div className="user-avatar">{user.name[0].toUpperCase()}</div>
                 <span className="user-name">{user.name.split(' ')[0]}</span>

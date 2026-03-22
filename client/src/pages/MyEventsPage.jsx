@@ -61,13 +61,7 @@ export default function MyEventsPage() {
             </svg>
             New Event
           </Link>
-          <button
-            className="btn btn-outline btn-sm"
-            onClick={handleManageBilling}
-            disabled={portalLoading}
-          >
-            {portalLoading ? 'Loading...' : 'Manage Subscription'}
-          </button>
+          
         </div>
       </div>
 

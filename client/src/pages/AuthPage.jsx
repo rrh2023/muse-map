@@ -60,7 +60,7 @@ export default function AuthPage() {
 </div>
 
         <h1 className="auth-title">
-          {mode === 'login' ? 'Welcome back' : 'Create account'}
+          {mode === 'login' ? 'Welcome back to Muse Map' : 'Create account'}
         </h1>
         <p className="auth-subtitle">
           {mode === 'login'
