@@ -355,3 +355,12 @@
     font-size: 0.78rem;
   }
 }
+
+.mobile-backdrop {
+  z-index: 99;
+}
+
+.mobile-menu {
+  z-index: 101;
+  position: relative;
+}
