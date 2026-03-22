@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import EventCard from '../components/EventCard';
+import API_BASE from '../config';
 import './CalendarPage.css';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -24,6 +25,15 @@ const CATEGORY_COLORS = {
   'experimental': '#E05A7A',
 };
 
+const NEIGHBORHOODS = [
+  { value: 'ward-a', short: 'Ward A' },
+  { value: 'ward-b', short: 'Ward B' },
+  { value: 'ward-c', short: 'Ward C' },
+  { value: 'ward-d', short: 'Ward D' },
+  { value: 'ward-e', short: 'Ward E' },
+  { value: 'ward-f', short: 'Ward F' },
+];
+
 export default function CalendarPage() {
   const today = new Date();
   const [viewDate, setViewDate] = useState(today);
@@ -31,6 +41,7 @@ export default function CalendarPage() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('all');
+  const [neighborhood, setNeighborhood] = useState('all');
   const [view, setView] = useState('calendar'); // 'calendar' | 'list'
 
   const year = viewDate.getFullYear();
@@ -39,8 +50,8 @@ export default function CalendarPage() {
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ month: month + 1, year, category });
-      const res = await fetch(`/api/events?${params}`);
+      const params = new URLSearchParams({ month: month + 1, year, category, neighborhood });
+      const res = await fetch(`${API_BASE}/api/events?${params}`);
       const data = await res.json();
       setEvents(data.events || []);
     } catch (e) {
@@ -48,7 +59,7 @@ export default function CalendarPage() {
     } finally {
       setLoading(false);
     }
-  }, [month, year, category]);
+  }, [month, year, category, neighborhood]);
 
   useEffect(() => { fetchEvents(); }, [fetchEvents]);
 
@@ -97,8 +108,24 @@ export default function CalendarPage() {
               List
             </button>
           </div>
-          <select className="category-filter" value={category} onChange={(e) => { setCategory(e.target.value); setSelectedDate(null); }}>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>)}
+          <select
+            className="category-filter"
+            value={category}
+            onChange={(e) => { setCategory(e.target.value); setSelectedDate(null); }}
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>
+            ))}
+          </select>
+          <select
+            className="category-filter"
+            value={neighborhood}
+            onChange={(e) => { setNeighborhood(e.target.value); setSelectedDate(null); }}
+          >
+            <option value="all">All Neighborhoods</option>
+            {NEIGHBORHOODS.map((n) => (
+              <option key={n.value} value={n.value}>{n.short}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -106,7 +133,6 @@ export default function CalendarPage() {
       {view === 'calendar' ? (
         <div className="calendar-layout">
           <div className="calendar-main">
-            {/* Month navigation */}
             <div className="month-nav">
               <button className="btn btn-ghost btn-sm" onClick={prevMonth}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -121,12 +147,9 @@ export default function CalendarPage() {
               </button>
             </div>
 
-            {/* Day headers */}
             <div className="cal-grid">
               {DAYS.map((d) => <div key={d} className="cal-day-header">{d}</div>)}
-              {/* Empty cells */}
               {Array.from({ length: firstDay }).map((_, i) => <div key={`e-${i}`} className="cal-cell empty" />)}
-              {/* Day cells */}
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
                 const dayEvents = eventsByDate[day] || [];
@@ -149,7 +172,6 @@ export default function CalendarPage() {
             </div>
           </div>
 
-          {/* Side panel */}
           <div className="calendar-sidebar">
             {selectedDate ? (
               <>
@@ -188,7 +210,6 @@ export default function CalendarPage() {
           </div>
         </div>
       ) : (
-        // List view
         <div className="list-view">
           {loading ? (
             <div className="page-loader"><div className="spinner" /></div>
