@@ -9,7 +9,7 @@ import MyEventsPage from './pages/MyEventsPage';
 import MapPage from './pages/MapPage';
 import PricingPage from './pages/PricingPage';
 import SubscribeSuccessPage from './pages/SubscribeSuccessPage';
-import SubscriptionGuard from './components/SubscriptionGuard';
+import SubscriptionGuard from './pages/SubscriptionGuard';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
