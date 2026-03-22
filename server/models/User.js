@@ -27,6 +27,29 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    // ── Stripe subscription ─────────────────────────
+    stripeCustomerId: {
+      type: String,
+      default: null,
+    },
+    stripeSubscriptionId: {
+      type: String,
+      default: null,
+    },
+    subscriptionStatus: {
+      type: String,
+      enum: ['active', 'inactive', 'past_due', 'canceled'],
+      default: 'inactive',
+    },
+    subscriptionPlan: {
+      type: String,
+      enum: ['monthly', 'annual', null],
+      default: null,
+    },
+    currentPeriodEnd: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
@@ -38,9 +61,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Compare password method
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+userSchema.methods.isSubscribed = function () {
+  return this.subscriptionStatus === 'active';
 };
 
 module.exports = mongoose.model('User', userSchema);

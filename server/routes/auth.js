@@ -8,6 +8,15 @@ const router = express.Router();
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret', { expiresIn: '7d' });
 
+const formatUser = (user) => ({
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  subscriptionStatus: user.subscriptionStatus,
+  subscriptionPlan: user.subscriptionPlan,
+  currentPeriodEnd: user.currentPeriodEnd,
+});
+
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
@@ -28,7 +37,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'Account created successfully',
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: formatUser(user),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -54,7 +63,7 @@ router.post('/login', async (req, res) => {
     res.json({
       message: 'Logged in successfully',
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: formatUser(user),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -63,7 +72,7 @@ router.post('/login', async (req, res) => {
 
 // GET /api/auth/me
 router.get('/me', protect, (req, res) => {
-  res.json({ user: { id: req.user._id, name: req.user.name, email: req.user.email } });
+  res.json({ user: formatUser(req.user) });
 });
 
 module.exports = router;

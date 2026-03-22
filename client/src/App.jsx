@@ -7,6 +7,9 @@ import EventDetailPage from './pages/EventDetailPage';
 import CreateEventPage from './pages/CreateEventPage';
 import MyEventsPage from './pages/MyEventsPage';
 import MapPage from './pages/MapPage';
+import PricingPage from './pages/PricingPage';
+import SubscribeSuccessPage from './pages/SubscribeSuccessPage';
+import SubscriptionGuard from './components/SubscriptionGuard';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -23,12 +26,16 @@ function AppRoutes() {
       <Navbar />
       <Routes>
         <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
-        <Route path="/" element={<CalendarPage />} />
-        <Route path="/map" element={<MapPage />} />
-        <Route path="/events/:id" element={<EventDetailPage />} />
-        <Route path="/create-event" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
-        <Route path="/edit-event/:id" element={<ProtectedRoute><CreateEventPage edit /></ProtectedRoute>} />
-        <Route path="/my-events" element={<ProtectedRoute><MyEventsPage /></ProtectedRoute>} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/subscribe/success" element={<ProtectedRoute><SubscribeSuccessPage /></ProtectedRoute>} />
+
+        <Route path="/" element={<SubscriptionGuard><CalendarPage /></SubscriptionGuard>} />
+        <Route path="/map" element={<SubscriptionGuard><MapPage /></SubscriptionGuard>} />
+        <Route path="/events/:id" element={<SubscriptionGuard><EventDetailPage /></SubscriptionGuard>} />
+        <Route path="/create-event" element={<SubscriptionGuard><CreateEventPage /></SubscriptionGuard>} />
+        <Route path="/edit-event/:id" element={<SubscriptionGuard><CreateEventPage edit /></SubscriptionGuard>} />
+        <Route path="/my-events" element={<SubscriptionGuard><MyEventsPage /></SubscriptionGuard>} />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
