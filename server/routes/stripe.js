@@ -85,7 +85,7 @@ router.post('/webhook', async (req, res) => {
             stripeSubscriptionId: subscription.id,
             subscriptionStatus: 'active',
             subscriptionPlan: plan,
-            currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+            currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
           });
           console.log(`✅ Subscription activated for user ${userId}`);
         }
@@ -99,7 +99,7 @@ router.post('/webhook', async (req, res) => {
         if (userId) {
           await User.findByIdAndUpdate(userId, {
             subscriptionStatus: subscription.status === 'active' ? 'active' : subscription.status,
-            currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+            currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
           });
         }
         break;
