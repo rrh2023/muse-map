@@ -10,6 +10,7 @@ export default function MyEventsPage() {
   const [myEvents, setMyEvents] = useState([]);
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [portalLoading, setPortalLoading] = useState(false);
 
   useEffect(() => {
     fetchAll();
@@ -31,6 +32,19 @@ export default function MyEventsPage() {
     }
   };
 
+  const handleManageBilling = async () => {
+    setPortalLoading(true);
+    try {
+      const res = await authFetch('/api/stripe/portal', { method: 'POST' });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch {
+      alert('Could not open billing portal. Please try again.');
+    } finally {
+      setPortalLoading(false);
+    }
+  };
+
   const displayedEvents = tab === 'organizing' ? myEvents : registeredEvents;
 
   return (
@@ -40,12 +54,21 @@ export default function MyEventsPage() {
           <h1>My Events</h1>
           <p>Events you're organizing or attending</p>
         </div>
-        <Link to="/create-event" className="btn btn-primary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-          New Event
-        </Link>
+        <div className="my-events-actions">
+          <Link to="/create-event" className="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            New Event
+          </Link>
+          <button
+            className="btn btn-outline btn-sm"
+            onClick={handleManageBilling}
+            disabled={portalLoading}
+          >
+            {portalLoading ? 'Loading...' : 'Manage Subscription'}
+          </button>
+        </div>
       </div>
 
       <div className="tabs">
