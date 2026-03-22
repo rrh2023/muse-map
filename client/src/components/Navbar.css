@@ -196,7 +196,7 @@
   display: block;
   width: 20px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
   border-radius: 2px;
   transition: transform 0.3s, opacity 0.3s;
   transform-origin: center;
@@ -222,8 +222,8 @@
   max-height: 0;
   transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.35s ease;
-  background: rgba(10, 10, 18, 0.98);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0a0a12;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .mobile-menu.open {
@@ -242,24 +242,28 @@
   padding: 12px 16px;
   font-size: 1rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.65);
+  color: #ffffff;
   text-decoration: none;
   border-radius: 10px;
   transition: color 0.2s, background 0.2s;
 }
 
-.mobile-nav-link:hover,
-.mobile-nav-link.active {
-  color: #fff;
+.mobile-nav-link:hover {
+  color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
+}
+
+.mobile-nav-link.active {
+  color: #9b7fe8;
+  background: rgba(155, 127, 232, 0.12);
 }
 
 .mobile-menu-actions {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px 20px 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px 20px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .mobile-full {
@@ -279,6 +283,16 @@
 .mobile-user-row .user-name {
   flex: 1;
   font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.mobile-menu-actions .btn-ghost {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mobile-menu-actions .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 /* ── Backdrop ──────────────────────────────── */
@@ -294,7 +308,6 @@
    RESPONSIVE BREAKPOINTS
    ============================================= */
 
-/* Hide desktop links and show hamburger on mobile */
 @media (max-width: 768px) {
   .navbar-links,
   .navbar-actions {
@@ -314,14 +327,12 @@
   }
 }
 
-/* On very small screens, shorten brand name */
 @media (max-width: 360px) {
   .navbar-brand-name {
     display: none;
   }
 }
 
-/* On mid-size screens (tablets), tighten spacing */
 @media (min-width: 769px) and (max-width: 1024px) {
   .navbar-inner {
     padding: 0 16px;
@@ -344,4 +355,3 @@
     font-size: 0.78rem;
   }
 }
-
