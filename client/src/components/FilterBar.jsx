@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NEIGHBORHOODS } from '../constants';
 import './FilterBar.css';
 
@@ -9,12 +10,12 @@ const DATE_OPTIONS = [
 ];
 
 const TYPE_OPTIONS = [
-  { value: 'all',          label: 'All',          icon: null },
-  { value: 'poetry',       label: 'Poetry',        icon: '📖' },
-  { value: 'visual-arts',  label: 'Visual Arts',   icon: '🎨' },
-  { value: 'music',        label: 'Music',         icon: '🎵' },
-  { value: 'community',    label: 'Community',     icon: '🌍' },
-  { value: 'experimental', label: 'Experimental',  icon: '✦' },
+  { value: 'all',          label: 'All',         icon: null },
+  { value: 'poetry',       label: 'Poetry',       icon: '📖' },
+  { value: 'visual-arts',  label: 'Visual Arts',  icon: '🎨' },
+  { value: 'music',        label: 'Music',        icon: '🎵' },
+  { value: 'community',    label: 'Community',    icon: '🌍' },
+  { value: 'experimental', label: 'Experimental', icon: '✦' },
 ];
 
 const PRICE_OPTIONS = [
@@ -24,112 +25,162 @@ const PRICE_OPTIONS = [
 ];
 
 export default function FilterBar({ filters, onChange, onClear, resultCount }) {
+  const [open, setOpen] = useState(false);
+
   const activeCount = [
-    filters.dateRange  !== 'all',
-    filters.category   !== 'all',
+    filters.dateRange    !== 'all',
+    filters.category     !== 'all',
     filters.neighborhood !== 'all',
-    filters.price      !== 'all',
+    filters.price        !== 'all',
   ].filter(Boolean).length;
+
+  const filterGroups = (
+    <div className="filter-bar-inner">
+
+      {/* Date */}
+      <div className="filter-group">
+        <span className="filter-label">Date</span>
+        <div className="filter-pills">
+          {DATE_OPTIONS.map(o => (
+            <button
+              key={o.value}
+              className={`filter-pill ${filters.dateRange === o.value ? 'active' : ''}`}
+              onClick={() => onChange('dateRange', o.value)}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="filter-divider" />
+
+      {/* Type */}
+      <div className="filter-group">
+        <span className="filter-label">Type</span>
+        <div className="filter-pills">
+          {TYPE_OPTIONS.map(o => (
+            <button
+              key={o.value}
+              className={`filter-pill ${filters.category === o.value ? 'active' : ''}`}
+              onClick={() => onChange('category', o.value)}
+            >
+              {o.icon && <span className="pill-icon">{o.icon}</span>}
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="filter-divider" />
+
+      {/* Neighborhood */}
+      <div className="filter-group">
+        <span className="filter-label">Neighborhood</span>
+        <select
+          className="filter-select"
+          value={filters.neighborhood}
+          onChange={e => onChange('neighborhood', e.target.value)}
+        >
+          <option value="all">All wards</option>
+          {NEIGHBORHOODS.map(n => (
+            <option key={n.value} value={n.value}>
+              {n.short} — {n.label.split('—')[1]?.trim()}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="filter-divider" />
+
+      {/* Price */}
+      <div className="filter-group">
+        <span className="filter-label">Price</span>
+        <div className="filter-pills">
+          {PRICE_OPTIONS.map(o => (
+            <button
+              key={o.value}
+              className={`filter-pill ${filters.price === o.value ? 'active' : ''}`}
+              onClick={() => onChange('price', o.value)}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  );
 
   return (
     <div className="filter-bar">
-      <div className="filter-bar-inner">
 
-        {/* Date */}
-        <div className="filter-group">
-          <span className="filter-label">Date</span>
-          <div className="filter-pills">
-            {DATE_OPTIONS.map(o => (
-              <button
-                key={o.value}
-                className={`filter-pill ${filters.dateRange === o.value ? 'active' : ''}`}
-                onClick={() => onChange('dateRange', o.value)}
-              >
-                {o.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="filter-divider" />
-
-        {/* Type */}
-        <div className="filter-group">
-          <span className="filter-label">Type</span>
-          <div className="filter-pills">
-            {TYPE_OPTIONS.map(o => (
-              <button
-                key={o.value}
-                className={`filter-pill ${filters.category === o.value ? 'active' : ''}`}
-                onClick={() => onChange('category', o.value)}
-              >
-                {o.icon && <span className="pill-icon">{o.icon}</span>}
-                {o.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="filter-divider" />
-
-        {/* Neighborhood */}
-        <div className="filter-group">
-          <span className="filter-label">Neighborhood</span>
-          <select
-            className="filter-select"
-            value={filters.neighborhood}
-            onChange={e => onChange('neighborhood', e.target.value)}
+      {/* ── Mobile toggle row ──────────────────────── */}
+      <div className="filter-mobile-header">
+        <button
+          className={`filter-toggle-btn ${activeCount > 0 ? 'has-active' : ''}`}
+          onClick={() => setOpen(o => !o)}
+          aria-expanded={open}
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+            <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+          Filters
+          {activeCount > 0 && (
+            <span className="filter-active-badge">{activeCount}</span>
+          )}
+          <svg
+            className={`filter-chevron ${open ? 'open' : ''}`}
+            width="13" height="13" viewBox="0 0 24 24" fill="none"
           >
-            <option value="all">All wards</option>
-            {NEIGHBORHOODS.map(n => (
-              <option key={n.value} value={n.value}>
-                {n.short} — {n.label.split('—')[1]?.trim()}
-              </option>
-            ))}
-          </select>
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+        </button>
+
+        <div className="filter-mobile-meta">
+          {resultCount !== undefined && (
+            <span className="filter-result-count">{resultCount} event{resultCount !== 1 ? 's' : ''}</span>
+          )}
+          {activeCount > 0 && (
+            <button className="filter-clear-btn" onClick={onClear}>
+              ✕ Clear
+            </button>
+          )}
         </div>
-
-        <div className="filter-divider" />
-
-        {/* Price */}
-        <div className="filter-group">
-          <span className="filter-label">Price</span>
-          <div className="filter-pills">
-            {PRICE_OPTIONS.map(o => (
-              <button
-                key={o.value}
-                className={`filter-pill ${filters.price === o.value ? 'active' : ''}`}
-                onClick={() => onChange('price', o.value)}
-              >
-                {o.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
       </div>
 
-      {/* Meta row */}
-      <div className="filter-meta">
-        {resultCount !== undefined && (
-          <span className="filter-result-count">
-            {resultCount} event{resultCount !== 1 ? 's' : ''}
-          </span>
-        )}
+      {/* ── Desktop: always visible ────────────────── */}
+      <div className="filter-desktop-body">
+        {filterGroups}
+        <div className="filter-meta">
+          {resultCount !== undefined && (
+            <span className="filter-result-count">{resultCount} event{resultCount !== 1 ? 's' : ''}</span>
+          )}
+          {activeCount > 0 && (
+            <button className="filter-clear-btn" onClick={onClear}>
+              ✕ Clear {activeCount} filter{activeCount !== 1 ? 's' : ''}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ── Mobile: collapsible panel ──────────────── */}
+      <div className={`filter-mobile-body ${open ? 'open' : ''}`}>
+        {filterGroups}
         {activeCount > 0 && (
-          <button className="filter-clear-btn" onClick={onClear}>
-            ✕ Clear {activeCount} filter{activeCount !== 1 ? 's' : ''}
+          <button className="filter-clear-full" onClick={() => { onClear(); setOpen(false); }}>
+            Clear all filters
           </button>
         )}
       </div>
+
     </div>
   );
 }
 
-// ── Utility: apply client-side dateRange + price filters ──────────────────
+// ── Utility ───────────────────────────────────────────────────────────────
 export function applyClientFilters(events, filters) {
   let out = events;
-
   const now = new Date();
 
   if (filters.dateRange === 'upcoming') {

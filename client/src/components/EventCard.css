@@ -151,3 +151,10 @@
   color: #9B7FD4;
   border: 1px solid rgba(155, 127, 212, 0.25);
 }
+
+/* ── Mobile event card ───────────────────────────── */
+@media (max-width: 480px) {
+  .event-card { border-radius: var(--radius-sm); }
+  .event-title { font-size: 1rem; }
+  .event-footer { flex-wrap: wrap; gap: 0.4rem; }
+}
