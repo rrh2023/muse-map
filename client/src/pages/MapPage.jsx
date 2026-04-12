@@ -72,7 +72,7 @@ export default function MapPage() {
   useEffect(() => {
     if (leafletMap.current || !mapRef.current) return;
     const map = L.map(mapRef.current, { center: [40.7178, -74.0431], zoom: 13 });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
       maxZoom: 19,
     }).addTo(map);
