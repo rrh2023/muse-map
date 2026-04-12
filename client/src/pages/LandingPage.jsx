@@ -12,7 +12,7 @@ const FEATURES = [
     ),
     label: 'Calendar',
     title: 'Every event, every month',
-    body: 'Browse a full calendar grid or switch to a filterable list. Category dots mark what's happening at a glance.',
+    body: 'Browse a full calendar grid or switch to a filterable list. Category dots mark what\'s happening at a glance.'
   },
   {
     icon: (
@@ -34,7 +34,7 @@ const FEATURES = [
     ),
     label: 'Wards',
     title: 'All six wards covered',
-    body: 'From Downtown Waterfront to The Heights — filter by ward to discover what's happening in your neighbourhood.',
+    body: 'From Downtown Waterfront to The Heights — filter by ward to discover what\'s happening in your neighbourhood.',
   },
 ];
 

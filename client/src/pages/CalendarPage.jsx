@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import EventCard from '../components/EventCard';
-import FilterBar, { applyClientFilters } from '../components/FilterBar';
+import FilterBar, { applyClientFilters } from '../components/FilterBar'
 import API_BASE from '../config';
 import { CATEGORY_COLORS } from '../constants';
 import './CalendarPage.css';
