@@ -27,39 +27,39 @@ export const CATEGORY_ICONS = {
 export const NEIGHBORHOODS = [
   {
     value: 'ward-a',
-    label: 'Ward A — Downtown / Waterfront',
+    label: 'Ward A — Greenville',
     short: 'Ward A',
-    areas: 'Downtown, Exchange Place, Paulus Hook, Powerhouse Arts District, Waterfront',
+    areas: 'Greenville',
   },
   {
     value: 'ward-b',
-    label: 'Ward B — Journal Square / Bergen Hill',
+    label: 'Ward B — West Side',
     short: 'Ward B',
-    areas: 'Journal Square, Bergen Hill, McGinley Square, parts of The Heights',
+    areas: 'West Side',
   },
   {
     value: 'ward-c',
-    label: 'Ward C — Greenville / West Side',
+    label: 'Ward C — Journal Square / Central',
     short: 'Ward C',
-    areas: 'Greenville, West Side, Marion Section, parts of Bergen-Lafayette',
+    areas: 'Journal Square, Central',
   },
   {
     value: 'ward-d',
-    label: 'Ward D — The Heights / North End',
+    label: 'Ward D — The Heights',
     short: 'Ward D',
-    areas: 'The Heights, North End, Riverview-Fiskville',
+    areas: 'The Heights',
   },
   {
     value: 'ward-e',
-    label: 'Ward E — Bergen-Lafayette / Communipaw',
+    label: 'Ward E — Downtown / Waterfront',
     short: 'Ward E',
-    areas: 'Bergen-Lafayette, Communipaw, Jackson Hill, parts of Journal Square',
+    areas: 'Downtown, Exchange Place, Paulus Hook, Powerhouse Arts District, Waterfront',
   },
   {
     value: 'ward-f',
-    label: 'Ward F — Lincoln Park / Hackensack Riverfront',
+    label: 'Ward F — Bergen-Lafayette',
     short: 'Ward F',
-    areas: 'Lincoln Park, Hackensack Riverfront, portions of West Side',
+    areas: 'Bergen-Lafayette',
   },
 ];
 

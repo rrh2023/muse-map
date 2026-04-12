@@ -157,12 +157,12 @@ export default function LandingPage() {
           <p className="lp-section-label">Six neighbourhoods</p>
           <div className="lp-ward-chips">
             {[
-              ['A', 'Downtown / Waterfront'],
-              ['B', 'Journal Square / Bergen Hill'],
-              ['C', 'Greenville / West Side'],
-              ['D', 'The Heights / North End'],
-              ['E', 'Bergen-Lafayette / Communipaw'],
-              ['F', 'Lincoln Park / Hackensack Riverfront'],
+              ['A', 'Greenville'],
+              ['B', 'West Side'],
+              ['C', 'Journal Square / Central'],
+              ['D', 'The Heights'],
+              ['E', 'Downtown / Waterfront'],
+              ['F', 'Bergen-Lafayette'],
             ].map(([letter, name]) => (
               <div key={letter} className="lp-ward-chip">
                 <span className="lp-ward-letter">Ward {letter}</span>
