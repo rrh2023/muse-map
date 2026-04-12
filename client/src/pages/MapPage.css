@@ -216,7 +216,7 @@
 .map-popup-link:hover { opacity: 0.75; }
 
 /* Leaflet default overrides */
-.leaflet-container { background: #f4f4f0; font-family: 'DM Sans', sans-serif; }
+.leaflet-container { background: #e8e8e8; font-family: 'DM Sans', sans-serif; }
 .leaflet-control-zoom a {
   background: #fff !important;
   color: #333 !important;
