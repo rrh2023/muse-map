@@ -272,6 +272,27 @@ select option { background: var(--surface2); }
 }
 @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } }
 
+/* ── Page transitions ─────────────────────────────── */
+.page-transition-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  animation: pageEnter 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, transform;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* In-page panel transitions (calendar ↔ list view) */
+.calendar-main,
+.list-view,
+.calendar-sidebar {
+  animation: pageEnter 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
 .modal-title { font-family: var(--font-display); font-size: 1.75rem; font-weight: 600; font-style: italic; }
 .modal-close { background: none; color: var(--text-muted); font-size: 1.3rem; line-height: 1; padding: 0.2rem; transition: color var(--transition); }

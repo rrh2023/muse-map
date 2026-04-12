@@ -208,3 +208,31 @@
   .event-detail-title { font-size: 1.9rem; }
   .back-link { margin-bottom: 1.25rem; }
 }
+
+/* ── Neighborhood ward label ─────────────────────── */
+.neighborhood-ward {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+  padding: 0.18rem 0.55rem;
+  background: rgba(94, 207, 207, 0.1);
+  border: 1px solid rgba(94, 207, 207, 0.25);
+  border-radius: 99px;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+/* ── Pricing meta ────────────────────────────────── */
+.price-tag { font-weight: 600; }
+.price-tag--free { color: #4EAF8C; }
+.price-tag--paid { color: #9B7FD4; }
+
+/* ── RSVP external link button ───────────────────── */
+.rsvp-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}

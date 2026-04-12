@@ -319,3 +319,27 @@
   .map-legend-item { font-size: 0.65rem; padding: 0.15rem 0.45rem 0.15rem 0.3rem; }
   .map-controls { padding: 0.65rem 1rem; }
 }
+
+/* ── Filter bar wrapper (sits between controls and map body) ── */
+.map-filter-bar-wrap {
+  padding: 0.75rem 1.5rem 0;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.map-filter-bar-wrap .filter-bar {
+  margin-bottom: 0.75rem;
+}
+
+/* ── Popup price labels ───────────────────────────── */
+.map-popup-free { color: #4EAF8C; font-weight: 600; }
+.map-popup-paid { color: #9B7FD4; font-weight: 600; }
+
+/* ── Sidebar price ────────────────────────────────── */
+.map-sidebar-price {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.sidebar-free { color: #4EAF8C; }
+.sidebar-paid { color: #9B7FD4; }

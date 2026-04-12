@@ -30,13 +30,39 @@ const eventSchema = new mongoose.Schema(
       enum: ['poetry', 'visual-arts', 'music', 'community', 'experimental'],
       default: 'community',
     },
+    neighborhood: {
+      type: String,
+      enum: ['ward-a', 'ward-b', 'ward-c', 'ward-d', 'ward-e', 'ward-f'],
+      required: [true, 'Neighborhood / ward is required'],
+    },
+    venueSubarea: {
+      type: String,
+      trim: true,
+      maxlength: [80, 'Subarea cannot exceed 80 characters'],
+      default: '',
+    },
     capacity: {
       type: Number,
       min: [1, 'Capacity must be at least 1'],
       default: null,
     },
+    isFree: {
+      type: Boolean,
+      required: [true, 'Please specify if this event is free or paid'],
+      default: true,
+    },
+    ticketPrice: {
+      type: Number,
+      min: [0, 'Price cannot be negative'],
+      default: null,
+    },
     imageUrl: {
       type: String,
+      default: '',
+    },
+    rsvpUrl: {
+      type: String,
+      trim: true,
       default: '',
     },
     organizer: {

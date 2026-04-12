@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CATEGORY_ICONS, CATEGORY_LABELS } from '../categories';
+import { NEIGHBORHOOD_MAP } from '../constants';
 import './EventCard.css';
 
 export function formatDate(dateStr) {
@@ -43,6 +44,15 @@ export default function EventCard({ event, compact = false }) {
             </svg>
             {event.location}
           </span>
+          {event.neighborhood && NEIGHBORHOOD_MAP[event.neighborhood] && (
+            <span className="meta-item neighborhood-chip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="1.5"/>
+              </svg>
+              {NEIGHBORHOOD_MAP[event.neighborhood].short}
+              {event.venueSubarea ? ` · ${event.venueSubarea}` : ''}
+            </span>
+          )}
         </div>
         <div className="event-footer">
           <span className="attendee-count">
@@ -53,6 +63,13 @@ export default function EventCard({ event, compact = false }) {
               <path d="M21 20c0-3.314-2-6-4.5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
             {event.attendees?.length || 0} going
+          </span>
+          <span className={`price-badge ${event.isFree !== false ? 'price-free' : 'price-paid'}`}>
+            {event.isFree !== false
+              ? 'Free'
+              : event.ticketPrice != null
+                ? `$${Number(event.ticketPrice).toFixed(2)}`
+                : 'Paid'}
           </span>
           {spotsLeft !== null && (
             <span className={`spots ${spotsLeft <= 5 ? 'low' : ''}`}>

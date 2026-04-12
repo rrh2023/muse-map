@@ -18,6 +18,13 @@ router.get('/', async (req, res) => {
 
     if (category && category !== 'all') filter.category = category;
 
+    const { neighborhood } = req.query;
+    if (neighborhood && neighborhood !== 'all') filter.neighborhood = neighborhood;
+
+    const { isFree } = req.query;
+    if (isFree === 'true')  filter.isFree = true;
+    if (isFree === 'false') filter.isFree = false;
+
     const events = await Event.find(filter)
       .populate('organizer', 'name email')
       .sort({ date: 1 });
@@ -71,10 +78,15 @@ router.get('/:id', async (req, res) => {
 // POST /api/events
 router.post('/', protect, async (req, res) => {
   try {
-    const { title, description, date, endDate, location, category, capacity, imageUrl } = req.body;
+    const { title, description, date, endDate, location, category, neighborhood, venueSubarea, capacity, isFree, ticketPrice, imageUrl, rsvpUrl } = req.body;
 
     const event = await Event.create({
-      title, description, date, endDate, location, category, capacity, imageUrl,
+      title, description, date, endDate, location, category,
+      neighborhood: neighborhood,
+      venueSubarea: venueSubarea || '',
+      capacity, imageUrl, rsvpUrl: rsvpUrl || '',
+      isFree: isFree !== false,
+      ticketPrice: isFree !== false ? null : (ticketPrice ?? null),
       organizer: req.user._id,
     });
 
@@ -95,8 +107,15 @@ router.put('/:id', protect, async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to edit this event' });
     }
 
-    const { title, description, date, endDate, location, category, capacity, imageUrl } = req.body;
-    Object.assign(event, { title, description, date, endDate, location, category, capacity, imageUrl });
+    const { title, description, date, endDate, location, category, neighborhood, venueSubarea, capacity, isFree, ticketPrice, imageUrl, rsvpUrl } = req.body;
+    Object.assign(event, {
+      title, description, date, endDate, location, category,
+      neighborhood: neighborhood,
+      venueSubarea: venueSubarea || '',
+      capacity, imageUrl, rsvpUrl: rsvpUrl || '',
+      isFree: isFree !== false,
+      ticketPrice: isFree !== false ? null : (ticketPrice ?? null),
+    });
     await event.save();
     await event.populate('organizer', 'name email');
 

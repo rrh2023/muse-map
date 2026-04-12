@@ -118,3 +118,36 @@
 .event-card.compact .event-card-header { padding: 0.7rem 0.75rem 0; }
 .event-card.compact .event-icon { font-size: 1.1rem; }
 .event-card.compact .event-footer { padding: 0.5rem 0.75rem; }
+
+/* ── Neighborhood chip ───────────────────────────── */
+.neighborhood-chip {
+  color: var(--accent) !important;
+  opacity: 0.85;
+  font-size: 0.75rem;
+  background: rgba(94, 207, 207, 0.08);
+  border: 1px solid rgba(94, 207, 207, 0.2);
+  border-radius: 99px;
+  padding: 0.1rem 0.45rem 0.1rem 0.35rem;
+  gap: 0.3rem;
+  margin-top: 0.1rem;
+}
+.neighborhood-chip svg { opacity: 1 !important; }
+
+/* ── Price badge ─────────────────────────────────── */
+.price-badge {
+  font-size: 0.73rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+.price-free {
+  background: rgba(78, 175, 140, 0.12);
+  color: #4EAF8C;
+  border: 1px solid rgba(78, 175, 140, 0.25);
+}
+.price-paid {
+  background: rgba(155, 127, 212, 0.12);
+  color: #9B7FD4;
+  border: 1px solid rgba(155, 127, 212, 0.25);
+}

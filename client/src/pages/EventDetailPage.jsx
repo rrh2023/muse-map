@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { NEIGHBORHOOD_MAP } from '../constants';
 import './EventDetailPage.css';
 import API_BASE from '../config';
 
@@ -27,10 +28,10 @@ export default function EventDetailPage() {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/events/${id}`);
-      if (!res.ok) { navigate('/'); return; }
+      if (!res.ok) { navigate('/events'); return; }
       const data = await res.json();
       setEvent(data.event);
-    } catch { navigate('/'); }
+    } catch { navigate('/events'); }
     finally { setLoading(false); }
   };
 
@@ -86,7 +87,7 @@ export default function EventDetailPage() {
 
   return (
     <main className="page">
-      <Link to="/" className="back-link">
+      <Link to="/events" className="back-link">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
@@ -128,6 +129,15 @@ export default function EventDetailPage() {
               <div>
                 <div className="meta-label">Location</div>
                 <div className="meta-value">{event.location}</div>
+                {event.neighborhood && (() => {
+                  const ward = NEIGHBORHOOD_MAP[event.neighborhood];
+                  return ward ? (
+                    <>
+                      <div className="meta-sub neighborhood-ward">{ward.short} — {ward.label.split('—')[1]?.trim()}</div>
+                      {event.venueSubarea && <div className="meta-sub">{event.venueSubarea}</div>}
+                    </>
+                  ) : null;
+                })()}
               </div>
             </div>
             <div className="meta-card">
@@ -142,6 +152,22 @@ export default function EventDetailPage() {
                 <div className="meta-value">{event.attendees.length} registered</div>
                 {event.capacity && (
                   <div className="meta-sub">Capacity: {event.capacity} · {spotsLeft} left</div>
+                )}
+              </div>
+            </div>
+            <div className="meta-card">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M2 10h20" stroke="currentColor" strokeWidth="1.5"/>
+              </svg>
+              <div>
+                <div className="meta-label">Admission</div>
+                {event.isFree !== false ? (
+                  <div className="meta-value price-tag price-tag--free">Free entry</div>
+                ) : (
+                  <div className="meta-value price-tag price-tag--paid">
+                    {event.ticketPrice != null ? `$${Number(event.ticketPrice).toFixed(2)} per person` : 'Paid — see organizer'}
+                  </div>
                 )}
               </div>
             </div>
@@ -187,6 +213,20 @@ export default function EventDetailPage() {
                 Delete Event
               </button>
             </div>
+          ) : event.rsvpUrl ? (
+            <a
+              href={event.rsvpUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-lg rsvp-btn"
+              style={{ width: '100%', justifyContent: 'center' }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <path d="M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              RSVP / Get tickets
+            </a>
           ) : (
             <>
               {isRegistered ? (

@@ -1,17 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import API_BASE from '../config';
+import { NEIGHBORHOODS, CATEGORY_COLORS } from '../constants';
+import FilterBar, { applyClientFilters } from '../components/FilterBar';
 import './MapPage.css';
-
-const CATEGORY_COLORS = {
-  'poetry':       '#5ECFCF',
-  'visual-arts':  '#9B7FD4',
-  'music':        '#4EAF8C',
-  'community':    '#7EB8E8',
-  'experimental': '#E05A7A',
-};
 
 const CATEGORY_LABELS = {
   'poetry':       'Poetry & Literature',
@@ -20,8 +14,6 @@ const CATEGORY_LABELS = {
   'community':    'Community & Culture',
   'experimental': 'Special / Experimental',
 };
-
-const CATEGORIES = ['all', 'poetry', 'visual-arts', 'music', 'community', 'experimental'];
 
 const geocodeCache = {};
 
@@ -57,49 +49,49 @@ function createPinSvg(color) {
   </svg>`;
 }
 
-export default function MapPage() {
-  const mapRef = useRef(null);
-  const leafletMap = useRef(null);
-  const markersRef = useRef([]);
+const DEFAULT_FILTERS = {
+  dateRange:    'all',
+  category:     'all',
+  neighborhood: 'all',
+  price:        'all',
+};
 
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [geocoding, setGeocoding] = useState(false);
-  const [category, setCategory] = useState('all');
+export default function MapPage() {
+  const mapRef      = useRef(null);
+  const leafletMap  = useRef(null);
+  const markersRef  = useRef([]);
+
+  const [rawEvents, setRawEvents]     = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [geocoding, setGeocoding]     = useState(false);
+  const [filters, setFilters]         = useState(DEFAULT_FILTERS);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [failedCount, setFailedCount] = useState(0);
 
-  // Init map once on mount
+  // Init Leaflet once
   useEffect(() => {
     if (leafletMap.current || !mapRef.current) return;
-
-    const map = L.map(mapRef.current, {
-      center: [40.7178, -74.0431], // Jersey City
-      zoom: 13,
-    });
-
+    const map = L.map(mapRef.current, { center: [40.7178, -74.0431], zoom: 13 });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
       maxZoom: 19,
     }).addTo(map);
-
     leafletMap.current = map;
-
-    return () => {
-      map.remove();
-      leafletMap.current = null;
-    };
+    return () => { map.remove(); leafletMap.current = null; };
   }, []);
 
-  // Fetch events when category changes
+  // Fetch when API-side filters change (category, neighborhood)
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const params = new URLSearchParams({ category });
-        const res = await fetch(`${API_BASE}/api/events?${params}`);
+        const params = new URLSearchParams({
+          category:     filters.category,
+          neighborhood: filters.neighborhood,
+        });
+        const res  = await fetch(`${API_BASE}/api/events?${params}`);
         const data = await res.json();
-        setEvents(data.events || []);
+        setRawEvents(data.events || []);
       } catch (e) {
         console.error(e);
       } finally {
@@ -107,40 +99,55 @@ export default function MapPage() {
       }
     };
     fetchEvents();
-  }, [category]);
+  }, [filters.category, filters.neighborhood]);
 
-  // Geocode and place pins when events change
+  // Apply client-side filters (dateRange + price)
+  const events = useMemo(
+    () => applyClientFilters(rawEvents, filters),
+    [rawEvents, filters]
+  );
+
+  const handleFilterChange = (key, value) => {
+    setFilters(f => ({ ...f, [key]: value }));
+    setSelectedEvent(null);
+  };
+
+  const handleClearFilters = () => {
+    setFilters(DEFAULT_FILTERS);
+    setSelectedEvent(null);
+  };
+
+  // Re-geocode and place pins whenever filtered events list changes
   useEffect(() => {
     if (!leafletMap.current) return;
-
-    // Clear old markers
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
     setFailedCount(0);
-
     if (!events.length) return;
 
     const placeMarkers = async () => {
       setGeocoding(true);
       let failed = 0;
-
       for (const event of events) {
         const coords = await geocode(event.location);
         if (!coords) { failed++; continue; }
 
-        const color = CATEGORY_COLORS[event.category] || CATEGORY_COLORS.other;
-
-        const icon = L.divIcon({
+        const color = CATEGORY_COLORS[event.category] || '#888';
+        const icon  = L.divIcon({
           html: createPinSvg(color),
           className: 'map-pin-icon',
-          iconSize: [26, 34],
-          iconAnchor: [13, 34],
-          popupAnchor: [0, -36],
+          iconSize: [26, 34], iconAnchor: [13, 34], popupAnchor: [0, -36],
         });
 
         const date = new Date(event.date).toLocaleDateString('en-US', {
           weekday: 'short', month: 'short', day: 'numeric',
         });
+
+        const priceLabel = event.isFree !== false
+          ? '<span class="map-popup-free">Free</span>'
+          : event.ticketPrice != null
+            ? `<span class="map-popup-paid">$${Number(event.ticketPrice).toFixed(2)}</span>`
+            : '<span class="map-popup-paid">Paid</span>';
 
         const marker = L.marker([coords.lat, coords.lng], { icon })
           .addTo(leafletMap.current)
@@ -148,7 +155,7 @@ export default function MapPage() {
             <div class="map-popup">
               <span class="map-popup-cat">${event.category}</span>
               <div class="map-popup-title">${event.title}</div>
-              <div class="map-popup-date">${date}</div>
+              <div class="map-popup-date">${date} · ${priceLabel}</div>
               <div class="map-popup-loc">📍 ${event.location}</div>
               <a href="/events/${event._id}" class="map-popup-link">View Event →</a>
             </div>
@@ -156,11 +163,8 @@ export default function MapPage() {
 
         marker.on('click', () => setSelectedEvent(event));
         markersRef.current.push(marker);
-
-        // Nominatim rate limit: 1 req/sec
         await new Promise(r => setTimeout(r, 1100));
       }
-
       setFailedCount(failed);
       setGeocoding(false);
     };
@@ -168,9 +172,8 @@ export default function MapPage() {
     placeMarkers();
   }, [events]);
 
-  const formatDate = (d) => new Date(d).toLocaleDateString('en-US', {
-    weekday: 'short', month: 'short', day: 'numeric',
-    hour: 'numeric', minute: '2-digit',
+  const formatDate = d => new Date(d).toLocaleDateString('en-US', {
+    weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
   });
 
   return (
@@ -180,8 +183,7 @@ export default function MapPage() {
           <h1 className="map-heading">Event Map</h1>
           {geocoding && (
             <span className="map-status">
-              <span className="map-pulse" />
-              Locating events…
+              <span className="map-pulse" /> Locating events…
             </span>
           )}
           {!geocoding && failedCount > 0 && (
@@ -190,41 +192,20 @@ export default function MapPage() {
             </span>
           )}
         </div>
-        <div className="map-controls-right">
-          <select
-            className="category-filter"
-            value={category}
-            onChange={e => { setCategory(e.target.value); setSelectedEvent(null); }}
-          >
-            {CATEGORIES.map(c => (
-              <option key={c} value={c}>
-                {c === 'all' ? 'All Categories' : (CATEGORY_LABELS[c] || c)}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
-      <div className="map-legend">
-        {Object.entries(CATEGORY_COLORS)
-          .filter(([k]) => k !== 'other')
-          .map(([cat, color]) => (
-            <button
-              key={cat}
-              className={`map-legend-item ${category === cat ? 'active' : ''}`}
-              onClick={() => setCategory(category === cat ? 'all' : cat)}
-            >
-              <span className="map-legend-dot" style={{ background: color, boxShadow: `0 0 5px ${color}` }} />
-              <span>{cat}</span>
-            </button>
-          ))}
+      <div className="map-filter-bar-wrap">
+        <FilterBar
+          filters={filters}
+          onChange={handleFilterChange}
+          onClear={handleClearFilters}
+          resultCount={events.length}
+        />
       </div>
 
       <div className="map-body">
         <div className="map-wrap">
-          {loading && (
-            <div className="map-loader"><div className="spinner" /></div>
-          )}
+          {loading && <div className="map-loader"><div className="spinner" /></div>}
           <div ref={mapRef} className="map-container" />
         </div>
 
@@ -235,6 +216,13 @@ export default function MapPage() {
             <h2 className="map-sidebar-title">{selectedEvent.title}</h2>
             <p className="map-sidebar-date">{formatDate(selectedEvent.date)}</p>
             <p className="map-sidebar-loc">📍 {selectedEvent.location}</p>
+            <p className="map-sidebar-price">
+              {selectedEvent.isFree !== false
+                ? <span className="sidebar-free">🎟 Free admission</span>
+                : selectedEvent.ticketPrice != null
+                  ? <span className="sidebar-paid">💳 ${Number(selectedEvent.ticketPrice).toFixed(2)} per person</span>
+                  : <span className="sidebar-paid">💳 Paid — see organizer</span>}
+            </p>
             {selectedEvent.description && (
               <p className="map-sidebar-desc">
                 {selectedEvent.description.length > 140

@@ -43,7 +43,7 @@ export default function AuthPage() {
       }
 
       login(data.user, data.token);
-      navigate('/');
+      navigate('/events');
     } catch {
       setError('Network error — is the server running?');
     } finally {

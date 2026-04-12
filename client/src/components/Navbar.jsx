@@ -55,14 +55,25 @@ export default function Navbar() {
     }
   };
 
+  const isLanding = pathname === '/';
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!isLanding) { setScrolled(false); return; }
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isLanding]);
+
   const navLinks = [
-    { to: '/', label: 'Calendar' },
-    { to: '/map', label: 'Map' },
+    { to: '/events', label: 'Calendar' },
+    { to: '/map',    label: 'Map' },
+    { to: '/about',  label: 'About' },
     ...(user ? [{ to: '/my-events', label: 'My Events' }] : []),
   ];
 
   return (
-    <nav className="navbar" ref={menuRef}>
+    <nav className={`navbar${isLanding ? ' navbar--transparent' : ''}${scrolled ? ' scrolled' : ''}`} ref={menuRef}>
       <div className="navbar-inner">
 
         {/* Brand */}

@@ -103,7 +103,7 @@ export default function MyEventsPage() {
           {tab === 'organizing' ? (
             <Link to="/create-event" className="btn btn-primary mt-2">Create your first event</Link>
           ) : (
-            <Link to="/" className="btn btn-outline mt-2">Browse events</Link>
+            <Link to="/events" className="btn btn-outline mt-2">Browse events</Link>
           )}
         </div>
       ) : (

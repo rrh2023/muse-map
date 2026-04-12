@@ -12,6 +12,23 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+/* Transparent overlay on the landing hero */
+.navbar--transparent {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Fade the border back in on scroll — handled via JS class below */
+.navbar--transparent.scrolled {
+  background: rgba(8, 8, 16, 0.85);
+  border-bottom-color: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .navbar-inner {
@@ -76,18 +93,39 @@
   font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  transition: color 0.2s, background 0.2s;
+  position: relative;
+  transition: color 0.2s ease;
   white-space: nowrap;
+}
+
+/* Sliding underline indicator */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.22s ease;
+  opacity: 0;
 }
 
 .nav-link:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-link.active {
   color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 /* ── Desktop actions ───────────────────────── */

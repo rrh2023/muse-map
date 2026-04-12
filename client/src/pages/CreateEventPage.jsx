@@ -1,15 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { CATEGORIES, NEIGHBORHOODS } from '../constants';
+import { detectWard } from '../utils/wardDetect';
 import './CreateEventPage.css';
-
-const CATEGORIES = [
-  { value: 'poetry',       label: 'Poetry & Literature' },
-  { value: 'visual-arts',  label: 'Visual Arts' },
-  { value: 'music',        label: 'Music & Performance' },
-  { value: 'community',    label: 'Community & Culture' },
-  { value: 'experimental', label: 'Special / Experimental' },
-];
 
 function toLocalDatetimeString(dateStr) {
   if (!dateStr) return '';
@@ -25,11 +19,16 @@ export default function CreateEventPage({ edit }) {
 
   const [form, setForm] = useState({
     title: '', description: '', date: '', endDate: '',
-    location: '', category: 'community', capacity: '', imageUrl: '',
+    location: '', category: 'community',
+    neighborhood: '', venueSubarea: '',
+    isFree: true, ticketPrice: '',
+    capacity: '', imageUrl: '', rsvpUrl: '',
   });
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(edit);
   const [error, setError] = useState('');
+  const [wardStatus, setWardStatus] = useState(null); // 'detecting' | 'detected' | 'manual' | 'none'
+  const locationBlurTimer = useRef(null);
 
   useEffect(() => {
     if (edit && id) {
@@ -43,9 +42,14 @@ export default function CreateEventPage({ edit }) {
             date: toLocalDatetimeString(ev.date),
             endDate: toLocalDatetimeString(ev.endDate),
             location: ev.location || '',
-            category: ev.category || 'other',
+            category: ev.category || 'community',
+            neighborhood: ev.neighborhood || '',
+            venueSubarea: ev.venueSubarea || '',
+            isFree: ev.isFree !== false,
+            ticketPrice: ev.ticketPrice ?? '',
             capacity: ev.capacity || '',
             imageUrl: ev.imageUrl || '',
+            rsvpUrl:  ev.rsvpUrl  || '',
           });
         })
         .finally(() => setFetching(false));
@@ -57,6 +61,29 @@ export default function CreateEventPage({ edit }) {
     setError('');
   };
 
+  const handleNeighborhoodChange = (e) => {
+    setForm((f) => ({ ...f, neighborhood: e.target.value }));
+    setWardStatus(e.target.value ? 'manual' : null);
+    setError('');
+  };
+
+  // Auto-detect ward when location field loses focus
+  const handleLocationBlur = async (e) => {
+    const address = e.target.value.trim();
+    if (!address || form.neighborhood) return; // skip if already set
+    clearTimeout(locationBlurTimer.current);
+    locationBlurTimer.current = setTimeout(async () => {
+      setWardStatus('detecting');
+      const ward = await detectWard(address);
+      if (ward) {
+        setForm((f) => ({ ...f, neighborhood: ward }));
+        setWardStatus('detected');
+      } else {
+        setWardStatus('none');
+      }
+    }, 200);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -66,6 +93,8 @@ export default function CreateEventPage({ edit }) {
       ...form,
       capacity: form.capacity ? Number(form.capacity) : null,
       endDate: form.endDate || undefined,
+      isFree: form.isFree,
+      ticketPrice: form.isFree ? null : (form.ticketPrice !== '' ? Number(form.ticketPrice) : null),
     };
 
     try {
@@ -163,9 +192,104 @@ export default function CreateEventPage({ edit }) {
                 placeholder="Address or venue name"
                 value={form.location}
                 onChange={handleChange}
+                onBlur={handleLocationBlur}
                 required
               />
             </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>
+                  Ward / Neighborhood *
+                  {wardStatus === 'detecting' && (
+                    <span className="ward-status ward-status--detecting">
+                      <span className="ward-spinner" /> Detecting…
+                    </span>
+                  )}
+                  {wardStatus === 'detected' && (
+                    <span className="ward-status ward-status--detected">✓ Auto-detected</span>
+                  )}
+                  {wardStatus === 'none' && (
+                    <span className="ward-status ward-status--none">Not in JC — select manually</span>
+                  )}
+                  {wardStatus === 'manual' && (
+                    <span className="ward-status ward-status--manual">Set manually</span>
+                  )}
+                </label>
+                <select
+                  name="neighborhood"
+                  value={form.neighborhood}
+                  onChange={handleNeighborhoodChange}
+                  className={wardStatus === 'detected' ? 'select-detected' : ''}
+                  required
+                >
+                  <option value="">— Select ward —</option>
+                  {NEIGHBORHOODS.map((n) => (
+                    <option key={n.value} value={n.value}>{n.label}</option>
+                  ))}
+                </select>
+                {form.neighborhood && (
+                  <span className="field-hint">
+                    {NEIGHBORHOODS.find(n => n.value === form.neighborhood)?.areas}
+                  </span>
+                )}
+              </div>
+              <div className="form-group">
+                <label>Specific area <span style={{ opacity: 0.5, fontWeight: 400 }}>(optional)</span></label>
+                <input
+                  name="venueSubarea"
+                  type="text"
+                  placeholder="e.g. Paulus Hook, McGinley Square…"
+                  value={form.venueSubarea}
+                  onChange={handleChange}
+                  maxLength={80}
+                />
+                <span className="field-hint">Help attendees find the area quickly</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h2 className="form-section-title">Pricing *</h2>
+            <div className="pricing-toggle">
+              <button
+                type="button"
+                className={`pricing-option ${form.isFree ? 'active' : ''}`}
+                onClick={() => setForm(f => ({ ...f, isFree: true, ticketPrice: '' }))}
+              >
+                <span className="pricing-icon">🎟</span>
+                <span className="pricing-label">Free</span>
+                <span className="pricing-sub">No ticket required</span>
+              </button>
+              <button
+                type="button"
+                className={`pricing-option ${!form.isFree ? 'active' : ''}`}
+                onClick={() => setForm(f => ({ ...f, isFree: false }))}
+              >
+                <span className="pricing-icon">💳</span>
+                <span className="pricing-label">Paid</span>
+                <span className="pricing-sub">Ticket / entry fee</span>
+              </button>
+            </div>
+            {!form.isFree && (
+              <div className="form-group">
+                <label>Ticket price *</label>
+                <div className="price-input-wrap">
+                  <span className="price-symbol">$</span>
+                  <input
+                    name="ticketPrice"
+                    type="number"
+                    placeholder="0.00"
+                    value={form.ticketPrice}
+                    onChange={handleChange}
+                    min={0}
+                    max={9999}
+                    step={0.01}
+                    required={!form.isFree}
+                  />
+                </div>
+                <span className="field-hint">Enter the price per person in USD</span>
+              </div>
+            )}
           </div>
 
           <div className="form-section">
@@ -193,6 +317,20 @@ export default function CreateEventPage({ edit }) {
                   onChange={handleChange}
                 />
               </div>
+            </div>
+            <div className="form-group">
+              <label>
+                RSVP link
+                <span style={{ opacity: 0.5, fontWeight: 400, marginLeft: '0.4rem' }}>(optional)</span>
+              </label>
+              <input
+                name="rsvpUrl"
+                type="url"
+                placeholder="https://eventbrite.com/... or any external registration link"
+                value={form.rsvpUrl}
+                onChange={handleChange}
+              />
+              <span className="field-hint">Overrides the built-in registration button — use for Eventbrite, Google Forms, etc.</span>
             </div>
           </div>
 
