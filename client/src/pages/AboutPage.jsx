@@ -64,14 +64,14 @@ export default function AboutPage() {
         <section className="about-section about-creator">
           <div className="about-creator-card">
             <span className="about-creator-label">Created by</span>
-            <h2 className="about-creator-name">The Poet Laureate of Jersey City - Melida Rodas</h2>
+            <h2 className="about-creator-name">The Poet Laureate of Jersey City</h2>
             <p className="about-creator-bio">
-              Muse Map was conceived and created by the Poet Laureate of Jersey City, Melida Rodas, as
+              Muse Map was conceived and created by the Poet Laureate of Jersey City —
               an initiative to make the city's rich, diverse cultural life visible and
               accessible to all who live, work, and create here.
             </p>
             <a
-              href="mailto:melidarodas@yahoo.com"
+              href="mailto:jcpofest@gmail.com"
               className="btn btn-primary btn-sm about-contact-btn"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">

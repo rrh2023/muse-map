@@ -12,7 +12,7 @@ const FEATURES = [
     ),
     label: 'Calendar',
     title: 'Every event, every month',
-    body: 'Browse a full calendar grid or switch to a filterable list. Category dots mark what\'s happening at a glance.'
+    body: 'Browse a full calendar grid or switch to a filterable list. Category dots mark what\'s happening at a glance.',
   },
   {
     icon: (
@@ -194,7 +194,7 @@ export default function LandingPage() {
           <div className="lp-footer-links">
             <Link to="/about" className="lp-footer-link">About Muse Map</Link>
             <span className="lp-footer-dot">·</span>
-            <a href="mailto:melidarodas@yahoo.com" className="lp-footer-link">Contact Us</a>
+            <a href="mailto:jcpofest@gmail.com" className="lp-footer-link">Contact Us</a>
             <span className="lp-footer-dot">·</span>
             <span className="lp-footer-dev">Developed by HudsonTech LLC</span>
           </div>
