@@ -13,6 +13,7 @@ export default function SiteFooter() {
 
         <div className="site-footer-links">
           <Link to="/about" className="site-footer-link">About</Link>
+          <Link to="/privacy" className="site-footer-link">Privacy Policy</Link>
           <a href="mailto:jcpofest@gmail.com" className="site-footer-link">Contact</a>
         </div>
 

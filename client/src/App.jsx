@@ -12,6 +12,7 @@ import CreateEventPage from './pages/CreateEventPage';
 import MyEventsPage from './pages/MyEventsPage';
 import MapPage from './pages/MapPage';
 import PricingPage from './pages/PricingPage';
+import PrivacyPage from './pages/PrivacyPage';
 import SubscribeSuccessPage from './pages/SubscribeSuccessPage';
 import SubscriptionGuard from './pages/SubscriptionGuard';
 
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route path="/about"   element={<AboutPage />} />
         <Route path="/auth"    element={user ? <Navigate to="/events" /> : <AuthPage />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/subscribe/success" element={<ProtectedRoute><SubscribeSuccessPage /></ProtectedRoute>} />
 
         {/* App (subscription-gated) */}
