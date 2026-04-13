@@ -186,11 +186,25 @@ export function applyClientFilters(events, filters) {
   if (filters.dateRange === 'upcoming') {
     out = out.filter(e => new Date(e.date) >= now);
   } else if (filters.dateRange === 'this-week') {
-    const weekEnd = new Date(now);
-    weekEnd.setDate(weekEnd.getDate() + 7);
-    out = out.filter(e => { const d = new Date(e.date); return d >= now && d <= weekEnd; });
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const dayOfWeek = today.getDay();
+    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() + mondayOffset);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 999);
+    out = out.filter(e => { const d = new Date(e.date); return d >= weekStart && d <= weekEnd; });
   } else if (filters.dateRange === 'weekend') {
-    out = out.filter(e => { const day = new Date(e.date).getDay(); return day === 0 || day === 6; });
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const dayOfWeek = today.getDay();
+    const satOffset = dayOfWeek === 0 ? -1 : 6 - dayOfWeek;
+    const saturday = new Date(today);
+    saturday.setDate(today.getDate() + satOffset);
+    const sunday = new Date(saturday);
+    sunday.setDate(saturday.getDate() + 1);
+    sunday.setHours(23, 59, 59, 999);
+    out = out.filter(e => { const d = new Date(e.date); return d >= saturday && d <= sunday; });
   }
 
   if (filters.price === 'free') {
