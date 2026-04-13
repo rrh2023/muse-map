@@ -66,7 +66,7 @@ export default function AboutPage() {
             <span className="about-creator-label">Created by</span>
             <h2 className="about-creator-name">The Poet Laureate of Jersey City, Melida Rodas</h2>
             <p className="about-creator-bio">
-              Muse Map was conceived and created by the Melida as an initiative to make the city's rich, diverse cultural life visible and
+              Muse Map was conceived and created by Melida Rodas as an initiative to make the city's rich, diverse cultural life visible and
               accessible to all who live, work, and create here.
             </p>
             <a

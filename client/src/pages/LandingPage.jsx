@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './LandingPage.css';
 
 const FEATURES = [
@@ -81,6 +82,7 @@ function Particles() {
 }
 
 export default function LandingPage() {
+  const { user } = useAuth();
   return (
     <div className="lp">
 
@@ -114,7 +116,7 @@ export default function LandingPage() {
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            <Link to="/auth" className="btn btn-ghost btn-lg">Sign in</Link>
+            {!user && <Link to="/auth" className="btn btn-ghost btn-lg">Sign in</Link>}
           </div>
 
           <div className="lp-categories">
@@ -189,7 +191,7 @@ export default function LandingPage() {
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            <Link to="/auth" className="btn btn-ghost btn-lg">Create account</Link>
+            {!user && <Link to="/auth" className="btn btn-ghost btn-lg">Create account</Link>}
           </div>
           <div className="lp-footer-links">
             <Link to="/about" className="lp-footer-link">About Muse Map</Link>
