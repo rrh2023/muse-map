@@ -469,3 +469,24 @@
   font-size: 0.78rem;
   color: var(--text-dim);
 }
+
+/* ── Footer logo ─────────────────────────────────── */
+.lp-footer-logo {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.lp-footer-logo-img {
+  height: 260px;
+  width: auto;
+  opacity: 0.88;
+  filter: drop-shadow(0 0 20px rgba(94,207,207,0.2));
+  transition: opacity 0.3s, filter 0.3s;
+  user-select: none;
+}
+
+.lp-footer-logo-img:hover {
+  opacity: 1;
+  filter: drop-shadow(0 0 36px rgba(94,207,207,0.35));
+}

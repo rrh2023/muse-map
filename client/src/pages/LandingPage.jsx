@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import logo from '../assets/muse-map-logo-full.png';
 import './LandingPage.css';
 
 const FEATURES = [
@@ -82,7 +82,6 @@ function Particles() {
 }
 
 export default function LandingPage() {
-  const { user } = useAuth();
   return (
     <div className="lp">
 
@@ -116,7 +115,7 @@ export default function LandingPage() {
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            {!user && <Link to="/auth" className="btn btn-ghost btn-lg">Sign in</Link>}
+            <Link to="/auth" className="btn btn-ghost btn-lg">Sign in</Link>
           </div>
 
           <div className="lp-categories">
@@ -191,7 +190,7 @@ export default function LandingPage() {
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            {!user && <Link to="/auth" className="btn btn-ghost btn-lg">Create account</Link>}
+            <Link to="/auth" className="btn btn-ghost btn-lg">Create account</Link>
           </div>
           <div className="lp-footer-links">
             <Link to="/about" className="lp-footer-link">About Muse Map</Link>
@@ -199,6 +198,9 @@ export default function LandingPage() {
             <a href="mailto:jcpofest@gmail.com" className="lp-footer-link">Contact Us</a>
             <span className="lp-footer-dot">·</span>
             <span className="lp-footer-dev">Developed by HudsonTech LLC</span>
+          </div>
+          <div className="lp-footer-logo">
+            <img src={logo} alt="Muse Map" className="lp-footer-logo-img" />
           </div>
         </div>
       </section>
