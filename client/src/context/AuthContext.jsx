@@ -58,8 +58,25 @@ export function AuthProvider({ children }) {
     return res;
   };
 
+  const updateProfile = async (fields) => {
+    const res = await authFetch('/api/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(fields),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setUser(data.user);
+      // Refresh token if returned (e.g. email changed)
+      if (data.token) {
+        setToken(data.token);
+        localStorage.setItem('token', data.token);
+      }
+    }
+    return { ok: res.ok, message: data.message };
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout, authFetch }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout, authFetch, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

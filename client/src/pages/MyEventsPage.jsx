@@ -5,16 +5,13 @@ import EventCard from '../components/EventCard';
 import './MyEventsPage.css';
 
 export default function MyEventsPage() {
-  const { authFetch, user } = useAuth();
+  const { authFetch } = useAuth();
   const [tab, setTab] = useState('organizing');
   const [myEvents, setMyEvents] = useState([]);
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [portalLoading, setPortalLoading] = useState(false);
 
-  useEffect(() => {
-    fetchAll();
-  }, []);
+  useEffect(() => { fetchAll(); }, []);
 
   const fetchAll = async () => {
     setLoading(true);
@@ -29,19 +26,6 @@ export default function MyEventsPage() {
       console.error(e);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleManageBilling = async () => {
-    setPortalLoading(true);
-    try {
-      const res = await authFetch('/api/stripe/portal', { method: 'POST' });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch {
-      alert('Could not open billing portal. Please try again.');
-    } finally {
-      setPortalLoading(false);
     }
   };
 
@@ -61,24 +45,15 @@ export default function MyEventsPage() {
             </svg>
             New Event
           </Link>
-          
         </div>
       </div>
 
       <div className="tabs">
-        <button
-          className={`tab ${tab === 'organizing' ? 'active' : ''}`}
-          onClick={() => setTab('organizing')}
-        >
-          Organizing
-          <span className="tab-count">{myEvents.length}</span>
+        <button className={`tab ${tab === 'organizing' ? 'active' : ''}`} onClick={() => setTab('organizing')}>
+          Organizing <span className="tab-count">{myEvents.length}</span>
         </button>
-        <button
-          className={`tab ${tab === 'attending' ? 'active' : ''}`}
-          onClick={() => setTab('attending')}
-        >
-          Attending
-          <span className="tab-count">{registeredEvents.length}</span>
+        <button className={`tab ${tab === 'attending' ? 'active' : ''}`} onClick={() => setTab('attending')}>
+          Attending <span className="tab-count">{registeredEvents.length}</span>
         </button>
       </div>
 
@@ -91,14 +66,10 @@ export default function MyEventsPage() {
             <path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
           <h3>
-            {tab === 'organizing'
-              ? "You haven't created any events yet"
-              : "You haven't registered for any events"}
+            {tab === 'organizing' ? "You haven't created any events yet" : "You haven't registered for any events"}
           </h3>
           <p>
-            {tab === 'organizing'
-              ? 'Share something with the community'
-              : 'Explore the calendar to find events'}
+            {tab === 'organizing' ? 'Share something with the community' : 'Explore the calendar to find events'}
           </p>
           {tab === 'organizing' ? (
             <Link to="/create-event" className="btn btn-primary mt-2">Create your first event</Link>
@@ -119,8 +90,7 @@ export default function MyEventsPage() {
                       <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.5"/>
                       <path d="M3 20c0-4 2.686-7 6-7s6 3 6 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                     </svg>
-                    {ev.attendees?.length || 0}
-                    {ev.capacity ? ` / ${ev.capacity}` : ''}
+                    {ev.attendees?.length || 0}{ev.capacity ? ` / ${ev.capacity}` : ''}
                   </span>
                 </div>
               )}

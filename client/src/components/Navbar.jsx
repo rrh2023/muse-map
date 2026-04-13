@@ -39,22 +39,6 @@ export default function Navbar() {
     navigate('/');
   };
 
-  const handleManageSubscription = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/api/stripe/portal`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch (err) {
-      console.error('Portal error:', err);
-    }
-  };
-
   const isLanding = pathname === '/';
   const [scrolled, setScrolled] = useState(false);
 
@@ -105,15 +89,10 @@ export default function Navbar() {
                 </svg>
                 New Event
               </Link>
-              {user.subscriptionStatus === 'active' && (
-                <button className="btn btn-ghost btn-sm" onClick={handleManageSubscription}>
-                  Manage Plan
-                </button>
-              )}
-              <div className="navbar-user">
+              <Link to="/profile" className="navbar-user">
                 <div className="user-avatar">{user.name[0].toUpperCase()}</div>
                 <span className="user-name">{user.name.split(' ')[0]}</span>
-              </div>
+              </Link>
               <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
                 Sign out
               </button>
@@ -159,14 +138,11 @@ export default function Navbar() {
                 </svg>
                 New Event
               </Link>
-              {user.subscriptionStatus === 'active' && (
-                <button className="btn btn-ghost btn-sm mobile-full" onClick={handleManageSubscription}>
-                  Manage Plan
-                </button>
-              )}
               <div className="mobile-user-row">
-                <div className="user-avatar">{user.name[0].toUpperCase()}</div>
-                <span className="user-name">{user.name}</span>
+                <Link to="/profile" className="mobile-user-link" onClick={() => setMenuOpen(false)}>
+                  <div className="user-avatar">{user.name[0].toUpperCase()}</div>
+                  <span className="user-name">{user.name}</span>
+                </Link>
                 <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
                   Sign out
                 </button>

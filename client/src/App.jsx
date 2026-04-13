@@ -10,8 +10,8 @@ import CalendarPage from './pages/CalendarPage';
 import EventDetailPage from './pages/EventDetailPage';
 import CreateEventPage from './pages/CreateEventPage';
 import MyEventsPage from './pages/MyEventsPage';
+import ProfilePage from './pages/ProfilePage';
 import MapPage from './pages/MapPage';
-import PricingPage from './pages/PricingPage';
 import PrivacyPage from './pages/PrivacyPage';
 import SubscribeSuccessPage from './pages/SubscribeSuccessPage';
 import SubscriptionGuard from './pages/SubscriptionGuard';
@@ -40,7 +40,6 @@ function AppRoutes() {
         <Route path="/"        element={<LandingPage />} />
         <Route path="/about"   element={<AboutPage />} />
         <Route path="/auth"    element={user ? <Navigate to="/events" /> : <AuthPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/subscribe/success" element={<ProtectedRoute><SubscribeSuccessPage /></ProtectedRoute>} />
 
@@ -51,6 +50,7 @@ function AppRoutes() {
         <Route path="/create-event"   element={<SubscriptionGuard><CreateEventPage /></SubscriptionGuard>} />
         <Route path="/edit-event/:id" element={<SubscriptionGuard><CreateEventPage edit /></SubscriptionGuard>} />
         <Route path="/my-events"      element={<SubscriptionGuard><MyEventsPage /></SubscriptionGuard>} />
+        <Route path="/profile"        element={<SubscriptionGuard><ProfilePage /></SubscriptionGuard>} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </AnimatedRoutes>

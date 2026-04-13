@@ -75,4 +75,45 @@ router.get('/me', protect, (req, res) => {
   res.json({ user: formatUser(req.user) });
 });
 
+// PUT /api/auth/profile — update name, email, and/or password
+router.put('/profile', protect, async (req, res) => {
+  try {
+    const { name, email, currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id).select('+password');
+
+    // Validate name
+    if (name !== undefined) {
+      if (!name.trim()) return res.status(400).json({ message: 'Name cannot be empty' });
+      user.name = name.trim();
+    }
+
+    // Validate email
+    if (email !== undefined && email !== user.email) {
+      const exists = await User.findOne({ email: email.toLowerCase() });
+      if (exists) return res.status(400).json({ message: 'Email already in use' });
+      user.email = email.toLowerCase().trim();
+    }
+
+    // Change password — requires current password
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: 'Current password is required to set a new one' });
+      }
+      const match = await user.comparePassword(currentPassword);
+      if (!match) return res.status(401).json({ message: 'Current password is incorrect' });
+      if (newPassword.length < 6) {
+        return res.status(400).json({ message: 'New password must be at least 6 characters' });
+      }
+      user.password = newPassword;
+    }
+
+    await user.save();
+    const token = signToken(user._id);
+
+    res.json({ message: 'Profile updated', user: formatUser(user), token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
