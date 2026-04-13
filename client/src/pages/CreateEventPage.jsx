@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { CATEGORIES, NEIGHBORHOODS } from '../constants';
 import { detectWard } from '../utils/wardDetect';
+import API_BASE from '../config';
 import './CreateEventPage.css';
 
 function toLocalDatetimeString(dateStr) {
@@ -32,25 +33,27 @@ export default function CreateEventPage({ edit }) {
 
   useEffect(() => {
     if (edit && id) {
-      fetch(`/api/events/${id}`)
+      fetch(`${API_BASE}/api/events/${id}`)
         .then((r) => r.json())
         .then((data) => {
           const ev = data.event;
           setForm({
-            title: ev.title || '',
-            description: ev.description || '',
-            date: toLocalDatetimeString(ev.date),
-            endDate: toLocalDatetimeString(ev.endDate),
-            location: ev.location || '',
-            category: ev.category || 'community',
+            title:        ev.title        || '',
+            description:  ev.description  || '',
+            date:         toLocalDatetimeString(ev.date),
+            endDate:      toLocalDatetimeString(ev.endDate),
+            location:     ev.location     || '',
+            category:     ev.category     || 'community',
             neighborhood: ev.neighborhood || '',
             venueSubarea: ev.venueSubarea || '',
-            isFree: ev.isFree !== false,
-            ticketPrice: ev.ticketPrice ?? '',
-            capacity: ev.capacity || '',
-            imageUrl: ev.imageUrl || '',
-            rsvpUrl:  ev.rsvpUrl  || '',
+            isFree:       ev.isFree !== false,
+            ticketPrice:  ev.ticketPrice ?? '',
+            capacity:     ev.capacity     || '',
+            imageUrl:     ev.imageUrl     || '',
+            rsvpUrl:      ev.rsvpUrl      || '',
           });
+          // Mark ward as manually set so the status indicator shows correctly
+          if (ev.neighborhood) setWardStatus('manual');
         })
         .finally(() => setFetching(false));
     }
