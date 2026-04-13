@@ -15,7 +15,24 @@ const app = express();
 // app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
 
 // Standard middleware
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://muse-map.vercel.app',
+  'https://musemapjc.com',
+  'https://www.musemapjc.com',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
