@@ -266,3 +266,61 @@
     padding: 0.5rem 2.2rem 0.5rem 0.85rem;
   }
 }
+/* ── Scrollable Type row with arrow nav ───────────── */
+.filter-group--type {
+  /* Let the Type row claim the full remaining width so its pills can scroll */
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.filter-pills-scroller {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.filter-pills--scroll {
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  /* Soft fade on the edges so pills appear to pass under the arrows */
+  mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  padding: 2px 4px;
+}
+.filter-pills--scroll::-webkit-scrollbar { display: none; }
+
+.filter-scroll-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.14s ease;
+  z-index: 2;
+}
+.filter-scroll-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.filter-scroll-arrow.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.filter-scroll-arrow--left  { margin-right: 0.3rem; }
+.filter-scroll-arrow--right { margin-left: 0.3rem; }
+
+@media (max-width: 767px) {
+  .filter-scroll-arrow { width: 32px; height: 32px; }
+}

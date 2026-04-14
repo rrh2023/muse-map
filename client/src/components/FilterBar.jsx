@@ -1,6 +1,66 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { NEIGHBORHOODS } from '../constants';
 import './FilterBar.css';
+
+// Horizontally-scrollable pill row with left/right arrow nav.
+// Arrows only appear when the content actually overflows.
+function ScrollablePills({ children }) {
+  const scrollRef = useRef(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  const updateArrows = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 2);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  };
+
+  useEffect(() => {
+    updateArrows();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', updateArrows, { passive: true });
+    const ro = new ResizeObserver(updateArrows);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener('scroll', updateArrows);
+      ro.disconnect();
+    };
+  }, []);
+
+  const scrollBy = (delta) => {
+    scrollRef.current?.scrollBy({ left: delta, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="filter-pills-scroller">
+      <button
+        type="button"
+        className={`filter-scroll-arrow filter-scroll-arrow--left ${canLeft ? '' : 'hidden'}`}
+        onClick={() => scrollBy(-220)}
+        aria-label="Scroll left"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <div className="filter-pills filter-pills--scroll" ref={scrollRef}>
+        {children}
+      </div>
+      <button
+        type="button"
+        className={`filter-scroll-arrow filter-scroll-arrow--right ${canRight ? '' : 'hidden'}`}
+        onClick={() => scrollBy(220)}
+        aria-label="Scroll right"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  );
+}
 
 const DATE_OPTIONS = [
   { value: 'all',       label: 'Any date' },
@@ -59,9 +119,9 @@ export default function FilterBar({ filters, onChange, onClear, resultCount }) {
       <div className="filter-divider" />
 
       {/* Type */}
-      <div className="filter-group">
+      <div className="filter-group filter-group--type">
         <span className="filter-label">Type</span>
-        <div className="filter-pills">
+        <ScrollablePills>
           {TYPE_OPTIONS.map(o => (
             <button
               key={o.value}
@@ -72,7 +132,7 @@ export default function FilterBar({ filters, onChange, onClear, resultCount }) {
               {o.label}
             </button>
           ))}
-        </div>
+        </ScrollablePills>
       </div>
 
       <div className="filter-divider" />

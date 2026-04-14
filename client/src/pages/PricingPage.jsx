@@ -23,10 +23,24 @@ const FEATURES = [
 ];
 
 export default function PricingPage() {
-  const { user, authFetch } = useAuth();
+  const { user, token, login, authFetch } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const startCheckout = async () => {
+    const res = await authFetch('/api/stripe/create-checkout-session', {
+      method: 'POST',
+      body: JSON.stringify({ plan: 'monthly' }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.message || 'Something went wrong');
+      setLoading(false);
+      return;
+    }
+    window.location.href = data.url;
+  };
 
   const handleSubscribe = async () => {
     if (!user) {
@@ -34,35 +48,38 @@ export default function PricingPage() {
       return;
     }
 
-    if (user.role !== 'organizer') {
-      setError('This plan is for organizer accounts only. Create an organizer account to subscribe.');
-      return;
-    }
-
     setLoading(true);
     setError('');
 
     try {
-      const res = await authFetch('/api/stripe/create-checkout-session', {
-        method: 'POST',
-        body: JSON.stringify({ plan: 'monthly' }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || 'Something went wrong');
-        setLoading(false);
-        return;
+      // Attendee → upgrade role to organizer first, then checkout
+      if (user.role !== 'organizer') {
+        const upgradeRes = await authFetch('/api/auth/role', {
+          method: 'PUT',
+          body: JSON.stringify({ role: 'organizer' }),
+        });
+        const upgradeData = await upgradeRes.json();
+        if (!upgradeRes.ok) {
+          setError(upgradeData.message || 'Could not upgrade account');
+          setLoading(false);
+          return;
+        }
+        login(upgradeData.user, token);
       }
 
-      // Redirect to Stripe Checkout
-      window.location.href = data.url;
+      await startCheckout();
     } catch {
       setError('Network error — please try again');
       setLoading(false);
     }
   };
+
+  const isAttendee = user && user.role !== 'organizer';
+  const ctaLabel = loading
+    ? 'Redirecting...'
+    : isAttendee
+      ? 'Continue as Organizer'
+      : 'Get Started';
 
   return (
     <div className="pricing-page">
@@ -94,13 +111,19 @@ export default function PricingPage() {
 
             <p className="pricing-desc">{PLAN.description}</p>
 
+            {isAttendee && (
+              <p className="pricing-upgrade-note">
+                You're signed in as an attendee. Continuing will switch your account to an organizer and take you to checkout.
+              </p>
+            )}
+
             <button
               className="btn btn-lg btn-primary"
               style={{ width: '100%', justifyContent: 'center' }}
               onClick={handleSubscribe}
               disabled={loading}
             >
-              {loading ? 'Redirecting...' : 'Get Started'}
+              {ctaLabel}
             </button>
           </div>
         </div>
