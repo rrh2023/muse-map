@@ -283,6 +283,7 @@
 
 .filter-pills--scroll {
   flex: 1 1 auto;
+  min-width: 0; /* critical: lets overflow-x clip inside a flex parent */
   flex-wrap: nowrap;
   overflow-x: auto;
   scroll-behavior: smooth;

@@ -10,6 +10,8 @@ export const CATEGORIES = [
   { slug: 'film',            label: 'Film & Media',            icon: '🎬',   color: '#5ECFCF', description: 'Screenings, Documentaries' },
   { slug: 'public-art',      label: 'Public Art & Tours',      icon: '👩🏼‍🎨', color: '#D97FB6', description: 'Walking Tours, Art Installs' },
   { slug: 'wellness',        label: 'Health & Wellness',       icon: '🧘',   color: '#8FC06A', description: 'Fitness, Yoga, Wellness Initiatives' },
+  { slug: 'kid-friendly',    label: 'Kid Friendly',            icon: '🪁',   color: '#FF9F68', description: 'Family-friendly events for all ages' },
+  { slug: 'parks',           label: 'Parks Event',             icon: '🍃',   color: '#6FBF73', description: 'Outdoor events in local parks' },
 ];
 
 // Slug array — useful for filter dropdowns

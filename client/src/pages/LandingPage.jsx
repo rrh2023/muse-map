@@ -49,6 +49,8 @@ const CATEGORIES = [
   { label: 'Film & Media',           icon: '🎬',   color: '#5ECFCF' },
   { label: 'Public Art & Tours',     icon: '👩🏼‍🎨', color: '#D97FB6' },
   { label: 'Health & Wellness',      icon: '🧘',   color: '#8FC06A' },
+  { label: 'Kid Friendly',           icon: '🪁',   color: '#FF9F68' },
+  { label: 'Parks Event',            icon: '🍃',   color: '#6FBF73' },
 ];
 
 function Particles() {

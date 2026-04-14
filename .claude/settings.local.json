@@ -7,7 +7,8 @@
       "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/SubscribeSuccessPage.jsx)",
       "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/routes/stripe.js)",
       "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/.env)",
-      "Bash(git check-ignore:*)"
+      "Bash(git check-ignore:*)",
+      "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/index.css /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/CalendarPage.css)"
     ]
   }
 }

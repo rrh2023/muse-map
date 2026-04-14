@@ -27,7 +27,7 @@ const eventSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['performing-arts', 'visual-arts', 'festivals', 'community', 'workshops', 'film', 'public-art', 'wellness'],
+      enum: ['performing-arts', 'visual-arts', 'festivals', 'community', 'workshops', 'film', 'public-art', 'wellness', 'kid-friendly', 'parks'],
       default: 'community',
     },
     neighborhood: {

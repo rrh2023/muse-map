@@ -8,6 +8,8 @@ export const CATEGORIES = [
   { value: 'film',            label: 'Film & Media' },
   { value: 'public-art',      label: 'Public Art & Tours' },
   { value: 'wellness',        label: 'Health & Wellness' },
+  { value: 'kid-friendly',    label: 'Kid Friendly' },
+  { value: 'parks',           label: 'Parks Event' },
 ];
 
 export const CATEGORY_COLORS = {
@@ -19,6 +21,8 @@ export const CATEGORY_COLORS = {
   'film':            '#5ECFCF',
   'public-art':      '#D97FB6',
   'wellness':        '#8FC06A',
+  'kid-friendly':    '#FF9F68',
+  'parks':           '#6FBF73',
 };
 
 export const CATEGORY_ICONS = {
@@ -30,6 +34,8 @@ export const CATEGORY_ICONS = {
   'film':            '🎬',
   'public-art':      '👩🏼‍🎨',
   'wellness':        '🧘',
+  'kid-friendly':    '🪁',
+  'parks':           '🍃',
 };
 
 // ── Neighborhoods / Wards ─────────────────────────────────────

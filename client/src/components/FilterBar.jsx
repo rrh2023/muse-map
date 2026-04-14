@@ -79,6 +79,8 @@ const TYPE_OPTIONS = [
   { value: 'film',            label: 'Film & Media',           icon: '🎬' },
   { value: 'public-art',      label: 'Public Art & Tours',     icon: '👩🏼‍🎨' },
   { value: 'wellness',        label: 'Health & Wellness',      icon: '🧘' },
+  { value: 'kid-friendly',    label: 'Kid Friendly',           icon: '🪁' },
+  { value: 'parks',           label: 'Parks Event',            icon: '🍃' },
 ];
 
 const PRICE_OPTIONS = [

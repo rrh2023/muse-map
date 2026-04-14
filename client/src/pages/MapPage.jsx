@@ -16,6 +16,8 @@ const CATEGORY_LABELS = {
   'film':            'Film & Media',
   'public-art':      'Public Art & Tours',
   'wellness':        'Health & Wellness',
+  'kid-friendly':    'Kid Friendly',
+  'parks':           'Parks Event',
 };
 
 const geocodeCache = {};
