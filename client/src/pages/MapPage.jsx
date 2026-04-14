@@ -8,11 +8,14 @@ import FilterBar, { applyClientFilters } from '../components/FilterBar';
 import './MapPage.css';
 
 const CATEGORY_LABELS = {
-  'poetry':       'Poetry & Literature',
-  'visual-arts':  'Visual Arts',
-  'music':        'Music & Performance',
-  'community':    'Community & Culture',
-  'experimental': 'Special / Experimental',
+  'performing-arts': 'Performing Arts',
+  'visual-arts':     'Visual Arts',
+  'festivals':       'Festivals & Fairs',
+  'community':       'Community Celebrations',
+  'workshops':       'Workshops & Education',
+  'film':            'Film & Media',
+  'public-art':      'Public Art & Tours',
+  'wellness':        'Health & Wellness',
 };
 
 const geocodeCache = {};

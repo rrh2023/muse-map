@@ -12,6 +12,7 @@ import CreateEventPage from './pages/CreateEventPage';
 import MyEventsPage from './pages/MyEventsPage';
 import ProfilePage from './pages/ProfilePage';
 import MapPage from './pages/MapPage';
+import PricingPage from './pages/PricingPage';
 import PrivacyPage from './pages/PrivacyPage';
 import SubscribeSuccessPage from './pages/SubscribeSuccessPage';
 import SubscriptionGuard from './pages/SubscriptionGuard';
@@ -40,17 +41,20 @@ function AppRoutes() {
         <Route path="/"        element={<LandingPage />} />
         <Route path="/about"   element={<AboutPage />} />
         <Route path="/auth"    element={user ? <Navigate to="/events" /> : <AuthPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/subscribe/success" element={<ProtectedRoute><SubscribeSuccessPage /></ProtectedRoute>} />
 
-        {/* App (subscription-gated) */}
-        <Route path="/events"         element={<SubscriptionGuard><CalendarPage /></SubscriptionGuard>} />
-        <Route path="/map"            element={<SubscriptionGuard><MapPage /></SubscriptionGuard>} />
-        <Route path="/events/:id"     element={<SubscriptionGuard><EventDetailPage /></SubscriptionGuard>} />
+        {/* App — free for any signed-in user */}
+        <Route path="/events"         element={<CalendarPage />} />
+        <Route path="/map"            element={<MapPage />} />
+        <Route path="/events/:id"     element={<EventDetailPage />} />
+        <Route path="/my-events"      element={<ProtectedRoute><MyEventsPage /></ProtectedRoute>} />
+        <Route path="/profile"        element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
+        {/* Organizer-only — requires organizer role + active subscription */}
         <Route path="/create-event"   element={<SubscriptionGuard><CreateEventPage /></SubscriptionGuard>} />
         <Route path="/edit-event/:id" element={<SubscriptionGuard><CreateEventPage edit /></SubscriptionGuard>} />
-        <Route path="/my-events"      element={<SubscriptionGuard><MyEventsPage /></SubscriptionGuard>} />
-        <Route path="/profile"        element={<SubscriptionGuard><ProfilePage /></SubscriptionGuard>} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </AnimatedRoutes>

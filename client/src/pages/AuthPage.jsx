@@ -7,7 +7,7 @@ import API_BASE from '../config';
 
 export default function AuthPage() {
   const [mode, setMode] = useState('login');
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'attendee' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -27,7 +27,7 @@ export default function AuthPage() {
       const endpoint = mode === 'login' ? `${API_BASE}/api/auth/login` : `${API_BASE}/api/auth/register`;
       const body = mode === 'login'
         ? { email: form.email, password: form.password }
-        : { name: form.name, email: form.email, password: form.password };
+        : { name: form.name, email: form.email, password: form.password, role: form.role };
 
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -43,7 +43,12 @@ export default function AuthPage() {
       }
 
       login(data.user, data.token);
-      navigate('/events');
+      // New organizers must subscribe before posting; attendees go straight to the calendar.
+      if (mode === 'register' && data.user?.role === 'organizer') {
+        navigate('/pricing');
+      } else {
+        navigate('/events');
+      }
     } catch {
       setError('Network error — is the server running?');
     } finally {
@@ -69,6 +74,31 @@ export default function AuthPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="auth-form">
+          {mode === 'register' && (
+            <div className="form-group">
+              <label>I'm joining as</label>
+              <div className="role-picker">
+                <button
+                  type="button"
+                  className={`role-option ${form.role === 'attendee' ? 'active' : ''}`}
+                  onClick={() => setForm(f => ({ ...f, role: 'attendee' }))}
+                >
+                  <span className="role-icon">🎟</span>
+                  <span className="role-title">Attendee</span>
+                  <span className="role-desc">Browse & sign up for events — free.</span>
+                </button>
+                <button
+                  type="button"
+                  className={`role-option ${form.role === 'organizer' ? 'active' : ''}`}
+                  onClick={() => setForm(f => ({ ...f, role: 'organizer' }))}
+                >
+                  <span className="role-icon">✦</span>
+                  <span className="role-title">Organizer</span>
+                  <span className="role-desc">Post events on the map — $25/mo.</span>
+                </button>
+              </div>
+            </div>
+          )}
           {mode === 'register' && (
             <div className="form-group">
               <label>Full name</label>

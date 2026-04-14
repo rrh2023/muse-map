@@ -27,7 +27,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    // ── Stripe subscription ─────────────────────────
+    role: {
+      type: String,
+      enum: ['attendee', 'organizer'],
+      default: 'attendee',
+    },
+    // ── Stripe subscription (organizers only) ───────
     stripeCustomerId: {
       type: String,
       default: null,
@@ -43,7 +48,7 @@ const userSchema = new mongoose.Schema(
     },
     subscriptionPlan: {
       type: String,
-      enum: ['monthly', 'annual', null],
+      enum: ['monthly', null],
       default: null,
     },
     currentPeriodEnd: {

@@ -41,11 +41,14 @@ const FEATURES = [
 ];
 
 const CATEGORIES = [
-  { label: 'Poetry & Literature', icon: '📖', color: '#5ECFCF' },
-  { label: 'Visual Arts',         icon: '🎨', color: '#9B7FD4' },
-  { label: 'Music & Performance', icon: '🎵', color: '#4EAF8C' },
-  { label: 'Community & Culture', icon: '🌍', color: '#7EB8E8' },
-  { label: 'Special / Experimental', icon: '✦', color: '#E05A7A' },
+  { label: 'Performing Arts',       icon: '🎭',   color: '#E05A7A' },
+  { label: 'Visual Arts',            icon: '🎨',   color: '#9B7FD4' },
+  { label: 'Festivals & Fairs',      icon: '🎉',   color: '#F2B138' },
+  { label: 'Community Celebrations', icon: '🏳️',   color: '#7EB8E8' },
+  { label: 'Workshops & Education',  icon: '🎓',   color: '#4EAF8C' },
+  { label: 'Film & Media',           icon: '🎬',   color: '#5ECFCF' },
+  { label: 'Public Art & Tours',     icon: '👩🏼‍🎨', color: '#D97FB6' },
+  { label: 'Health & Wellness',      icon: '🧘',   color: '#8FC06A' },
 ];
 
 function Particles() {

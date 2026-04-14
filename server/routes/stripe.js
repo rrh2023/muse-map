@@ -10,17 +10,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Creates a Stripe Checkout session for the selected plan
 router.post('/create-checkout-session', protect, async (req, res) => {
   try {
-    const { plan } = req.body; // 'monthly' or 'annual'
-
-    if (!['monthly', 'annual'].includes(plan)) {
-      return res.status(400).json({ message: 'Invalid plan. Must be monthly or annual.' });
-    }
-
-    const priceId = plan === 'monthly'
-      ? process.env.STRIPE_PRICE_MONTHLY
-      : process.env.STRIPE_PRICE_ANNUAL;
+    const plan = 'monthly'; // only monthly organizer plan is supported
+    const priceId = process.env.STRIPE_PRICE_MONTHLY;
 
     const user = await User.findById(req.user._id);
+
+    // Only organizers can subscribe
+    if (user.role !== 'organizer') {
+      return res.status(403).json({ message: 'Only organizer accounts can subscribe.' });
+    }
 
     // Reuse existing Stripe customer or create a new one
     let customerId = user.stripeCustomerId;

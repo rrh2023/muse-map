@@ -1,26 +1,35 @@
 // ── Categories ────────────────────────────────────────────────
 export const CATEGORIES = [
-  { value: 'poetry',       label: 'Poetry & Literature' },
-  { value: 'visual-arts',  label: 'Visual Arts' },
-  { value: 'music',        label: 'Music & Performance' },
-  { value: 'community',    label: 'Community & Culture' },
-  { value: 'experimental', label: 'Special / Experimental' },
+  { value: 'performing-arts', label: 'Performing Arts' },
+  { value: 'visual-arts',     label: 'Visual Arts' },
+  { value: 'festivals',       label: 'Festivals & Fairs' },
+  { value: 'community',       label: 'Community Celebrations' },
+  { value: 'workshops',       label: 'Workshops & Education' },
+  { value: 'film',            label: 'Film & Media' },
+  { value: 'public-art',      label: 'Public Art & Tours' },
+  { value: 'wellness',        label: 'Health & Wellness' },
 ];
 
 export const CATEGORY_COLORS = {
-  'poetry':       '#5ECFCF',
-  'visual-arts':  '#9B7FD4',
-  'music':        '#4EAF8C',
-  'community':    '#7EB8E8',
-  'experimental': '#E05A7A',
+  'performing-arts': '#E05A7A',
+  'visual-arts':     '#9B7FD4',
+  'festivals':       '#F2B138',
+  'community':       '#7EB8E8',
+  'workshops':       '#4EAF8C',
+  'film':            '#5ECFCF',
+  'public-art':      '#D97FB6',
+  'wellness':        '#8FC06A',
 };
 
 export const CATEGORY_ICONS = {
-  'poetry':       '📖',
-  'visual-arts':  '🎨',
-  'music':        '🎵',
-  'community':    '🌍',
-  'experimental': '✦',
+  'performing-arts': '🎭',
+  'visual-arts':     '🎨',
+  'festivals':       '🎉',
+  'community':       '🏳️',
+  'workshops':       '🎓',
+  'film':            '🎬',
+  'public-art':      '👩🏼‍🎨',
+  'wellness':        '🧘',
 };
 
 // ── Neighborhoods / Wards ─────────────────────────────────────

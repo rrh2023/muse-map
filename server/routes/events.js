@@ -4,6 +4,17 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Gate: only active organizers may post/edit events
+const requireActiveOrganizer = (req, res, next) => {
+  if (req.user.role !== 'organizer') {
+    return res.status(403).json({ message: 'Only organizers can post events. Upgrade your account to post.' });
+  }
+  if (req.user.subscriptionStatus !== 'active') {
+    return res.status(402).json({ message: 'An active organizer subscription is required to post events.' });
+  }
+  next();
+};
+
 // GET /api/events — get all published events
 router.get('/', async (req, res) => {
   try {
@@ -82,7 +93,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/events
-router.post('/', protect, async (req, res) => {
+router.post('/', protect, requireActiveOrganizer, async (req, res) => {
   try {
     const { title, description, date, endDate, location, category, neighborhood, venueSubarea, capacity, isFree, ticketPrice, imageUrl, rsvpUrl } = req.body;
 
@@ -104,7 +115,7 @@ router.post('/', protect, async (req, res) => {
 });
 
 // PUT /api/events/:id
-router.put('/:id', protect, async (req, res) => {
+router.put('/:id', protect, requireActiveOrganizer, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: 'Event not found' });

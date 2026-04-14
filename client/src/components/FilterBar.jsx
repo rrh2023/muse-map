@@ -10,12 +10,15 @@ const DATE_OPTIONS = [
 ];
 
 const TYPE_OPTIONS = [
-  { value: 'all',          label: 'All',         icon: null },
-  { value: 'poetry',       label: 'Poetry',       icon: '📖' },
-  { value: 'visual-arts',  label: 'Visual Arts',  icon: '🎨' },
-  { value: 'music',        label: 'Music',        icon: '🎵' },
-  { value: 'community',    label: 'Community',    icon: '🌍' },
-  { value: 'experimental', label: 'Experimental', icon: '✦' },
+  { value: 'all',             label: 'All',                    icon: null },
+  { value: 'performing-arts', label: 'Performing Arts',        icon: '🎭' },
+  { value: 'visual-arts',     label: 'Visual Arts',            icon: '🎨' },
+  { value: 'festivals',       label: 'Festivals & Fairs',      icon: '🎉' },
+  { value: 'community',       label: 'Community Celebrations', icon: '🏳️' },
+  { value: 'workshops',       label: 'Workshops & Education',  icon: '🎓' },
+  { value: 'film',            label: 'Film & Media',           icon: '🎬' },
+  { value: 'public-art',      label: 'Public Art & Tours',     icon: '👩🏼‍🎨' },
+  { value: 'wellness',        label: 'Health & Wellness',      icon: '🧘' },
 ];
 
 const PRICE_OPTIONS = [

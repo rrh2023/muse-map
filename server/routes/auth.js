@@ -12,6 +12,7 @@ const formatUser = (user) => ({
   id: user._id,
   name: user.name,
   email: user.email,
+  role: user.role,
   subscriptionStatus: user.subscriptionStatus,
   subscriptionPlan: user.subscriptionPlan,
   currentPeriodEnd: user.currentPeriodEnd,
@@ -20,7 +21,7 @@ const formatUser = (user) => ({
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Please provide name, email, and password' });
@@ -31,7 +32,8 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Email already registered' });
     }
 
-    const user = await User.create({ name, email, password });
+    const safeRole = role === 'organizer' ? 'organizer' : 'attendee';
+    const user = await User.create({ name, email, password, role: safeRole });
     const token = signToken(user._id);
 
     res.status(201).json({

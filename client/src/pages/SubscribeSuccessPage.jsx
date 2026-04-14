@@ -26,7 +26,7 @@ export default function SubscribeSuccessPage() {
 
     if (token) refresh();
 
-    const timer = setTimeout(() => navigate('/events'), 4000);
+    const timer = setTimeout(() => navigate('/my-events'), 4000);
     return () => clearTimeout(timer);
   }, []);
 

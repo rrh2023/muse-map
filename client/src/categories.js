@@ -2,11 +2,14 @@
 // Import this wherever categories are needed.
 
 export const CATEGORIES = [
-  { slug: 'poetry',       label: 'Poetry & Literature',      icon: '📖', color: '#7EB8E8' },
-  { slug: 'visual-arts',  label: 'Visual Arts',              icon: '🎨', color: '#9B7FD4' },
-  { slug: 'music',        label: 'Music & Performance',      icon: '🎵', color: '#5ECFCF' },
-  { slug: 'community',    label: 'Community & Culture',      icon: '🌍', color: '#4EAF8C' },
-  { slug: 'experimental', label: 'Special / Experimental',   icon: '✦',  color: '#E05A7A' },
+  { slug: 'performing-arts', label: 'Performing Arts',        icon: '🎭',   color: '#E05A7A', description: 'Theater, Dance, Music' },
+  { slug: 'visual-arts',     label: 'Visual Arts',             icon: '🎨',   color: '#9B7FD4', description: 'Exhibitions, Galleries, Murals' },
+  { slug: 'festivals',       label: 'Festivals & Fairs',       icon: '🎉',   color: '#F2B138', description: 'Street Fairs, Cultural Festivals' },
+  { slug: 'community',       label: 'Community Celebrations',  icon: '🏳️',   color: '#7EB8E8', description: 'Flag Raisings, Commemorations' },
+  { slug: 'workshops',       label: 'Workshops & Education',   icon: '🎓',   color: '#4EAF8C', description: 'Classes, Seminars, Masterclasses' },
+  { slug: 'film',            label: 'Film & Media',            icon: '🎬',   color: '#5ECFCF', description: 'Screenings, Documentaries' },
+  { slug: 'public-art',      label: 'Public Art & Tours',      icon: '👩🏼‍🎨', color: '#D97FB6', description: 'Walking Tours, Art Installs' },
+  { slug: 'wellness',        label: 'Health & Wellness',       icon: '🧘',   color: '#8FC06A', description: 'Fitness, Yoga, Wellness Initiatives' },
 ];
 
 // Slug array — useful for filter dropdowns
@@ -18,4 +21,4 @@ export const CATEGORY_ICONS  = Object.fromEntries(CATEGORIES.map(c => [c.slug, c
 export const CATEGORY_LABELS = Object.fromEntries(CATEGORIES.map(c => [c.slug, c.label]));
 
 // Default category
-export const DEFAULT_CATEGORY = 'poetry';
+export const DEFAULT_CATEGORY = 'community';

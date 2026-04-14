@@ -7,12 +7,12 @@ dotenv.config();
 
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');
-// const stripeRoutes = require('./routes/stripe'); // disabled — re-enable when payments go live
+const stripeRoutes = require('./routes/stripe');
 
 const app = express();
 
-// ⚠️ Stripe webhook — disabled until payments go live
-// app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
+// ⚠️ Stripe webhook MUST receive raw body — mount before express.json()
+app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
 
 // Standard middleware
 const allowedOrigins = [
@@ -38,7 +38,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
-// app.use('/api/stripe', stripeRoutes); // disabled — re-enable when payments go live
+app.use('/api/stripe', stripeRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'OK', message: 'Server running' }));

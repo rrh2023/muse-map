@@ -148,3 +148,55 @@
   width: auto;
   object-fit: contain;
 }
+/* ── Role picker (register only) ──────────────────────────── */
+.role-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.role-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.85rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-md, 10px);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+  font: inherit;
+  color: var(--text);
+}
+
+.role-option:hover {
+  border-color: rgba(94,207,207,0.35);
+}
+
+.role-option.active {
+  border-color: rgba(94,207,207,0.6);
+  background: rgba(94,207,207,0.08);
+  box-shadow: var(--glow);
+}
+
+.role-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.role-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.role-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+@media (max-width: 480px) {
+  .role-picker { grid-template-columns: 1fr; }
+}

@@ -191,3 +191,10 @@
   .pricing-cards { grid-template-columns: 1fr; }
   .pricing-title { font-size: 2.2rem; }
 }
+/* Single-plan layout */
+.pricing-cards--single {
+  grid-template-columns: 1fr;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
