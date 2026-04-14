@@ -435,12 +435,47 @@
 }
 
 @media (max-width: 600px) {
-  .lp-hero { padding: 3.5rem 1.25rem 5.5rem; min-height: calc(100vh - 60px); }
+  .lp-hero { padding: 3rem 1rem 5rem; min-height: calc(100vh - 60px); }
+  .lp-hero-content { gap: 1.1rem; }
+
+  /* Scale down massive hero title so it fits narrow viewports */
+  .lp-title { font-size: clamp(2.4rem, 12vw, 3.6rem); letter-spacing: -0.01em; }
+  .lp-subtitle { font-size: 0.92rem; line-height: 1.6; }
+  .lp-eyebrow { font-size: 0.68rem; letter-spacing: 0.18em; }
+
   .lp-cta  { flex-direction: column; width: 100%; }
   .lp-cta .btn { width: 100%; justify-content: center; }
+
+  /* Tighter category chips */
+  .lp-categories { gap: 0.35rem; }
+  .lp-cat-chip { font-size: 0.7rem; padding: 0.22rem 0.6rem; }
+
   .lp-ward-chips { grid-template-columns: 1fr; }
-  .lp-features, .lp-wards, .lp-footer-cta { padding: 3.5rem 1.25rem; }
+  .lp-features, .lp-wards, .lp-footer-cta { padding: 3.5rem 1rem; }
   .lp-section-title { margin-bottom: 2rem; }
+
+  /* Shrink blobs so they don't dwarf the viewport */
+  .lp-blob-1 { width: 360px; height: 360px; }
+  .lp-blob-2 { width: 320px; height: 320px; }
+  .lp-blob-3 { width: 280px; height: 280px; }
+
+  .lp-feature-card { padding: 1.5rem 1.25rem; }
+
+  /* Footer logo was 260px tall — way too big on phones */
+  .lp-footer-logo { margin-top: 1.75rem; }
+  .lp-footer-logo-img { height: 140px; }
+
+  .lp-footer-sub { font-size: 0.92rem; margin-bottom: 2rem; }
+  .lp-footer-links { gap: 0.5rem; margin-top: 1.5rem; }
+  .lp-footer-link, .lp-footer-dev { font-size: 0.75rem; }
+
+  /* Hide scroll hint on short mobile viewports — clutters the CTA */
+  .lp-scroll-hint { display: none; }
+}
+
+@media (max-width: 380px) {
+  .lp-title { font-size: clamp(2rem, 13vw, 2.8rem); }
+  .lp-footer-logo-img { height: 110px; }
 }
 
 /* ── Landing footer links row ────────────────────── */
