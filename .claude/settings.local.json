@@ -4,7 +4,8 @@
       "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/categories.js)",
       "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/constants.js /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/components/FilterBar.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/MapPage.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/LandingPage.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/CreateEventPage.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/models/Event.js /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/index.css)",
       "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/models/User.js /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/routes/auth.js /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/routes/events.js /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/routes/stripe.js /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/AuthPage.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/AuthPage.css /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/PricingPage.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/PricingPage.css /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/SubscriptionGuard.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/App.jsx /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/components/Navbar.jsx)",
-      "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/SubscribeSuccessPage.jsx)"
+      "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/client/src/pages/SubscribeSuccessPage.jsx)",
+      "Bash(chmod +w /c/Users/robhe/OneDrive/Desktop/Portfolio/muse-map/server/routes/stripe.js)"
     ]
   }
 }
