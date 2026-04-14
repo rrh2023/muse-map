@@ -36,8 +36,19 @@ router.post('/create-checkout-session', protect, async (req, res) => {
       return res.status(403).json({ message: 'Only organizer accounts can subscribe.' });
     }
 
-    // Reuse existing Stripe customer or create a new one
+    // Reuse existing Stripe customer, or create a new one.
+    // If the stored customer ID is from a different Stripe mode (test vs live)
+    // or was deleted, the retrieve call fails — fall through to create a fresh one.
     let customerId = user.stripeCustomerId;
+    if (customerId) {
+      try {
+        const existing = await stripe.customers.retrieve(customerId);
+        if (existing.deleted) customerId = null;
+      } catch (err) {
+        console.warn('[stripe] stored customer not usable, creating new:', err.message);
+        customerId = null;
+      }
+    }
     if (!customerId) {
       const customer = await stripe.customers.create({
         email: user.email,
@@ -46,6 +57,10 @@ router.post('/create-checkout-session', protect, async (req, res) => {
       });
       customerId = customer.id;
       user.stripeCustomerId = customerId;
+      user.stripeSubscriptionId = null;
+      user.subscriptionStatus = 'inactive';
+      user.subscriptionPlan = null;
+      user.currentPeriodEnd = null;
       await user.save({ validateBeforeSave: false });
     }
 
